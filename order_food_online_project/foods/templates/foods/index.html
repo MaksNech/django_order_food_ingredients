@@ -1,0 +1,16 @@
+{% extends "foods/base.html" %}
+{% block content %}
+{% if dishes %}
+{% for dish in dishes %}
+<div class="col-md-4">
+    <h2>{{ dish.name }}</h2>
+    <p>{{ dish.description }}</p>
+    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+</div>
+{% endfor %}
+{% else %}
+<p>No dishes match your search criteria.</p>
+{% endif %}
+{% endblock %}
+
+
