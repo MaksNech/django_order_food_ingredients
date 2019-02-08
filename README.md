@@ -83,10 +83,10 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
-######Username: admin
-######Email address: admin@mail.com
-######Password: 123
-######DROP TABLE foods_dish, foods_dishingredients, foods_ingredient, foods_order, foods_orderingredients, foods_section;
+###### Username: admin
+###### Email address: admin@mail.com
+###### Password: 123
+
 #### Inside the project directory run app with terminal command:
 ```bash
 python manage.py runserver
