@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,22 +7,18 @@
     <meta name="description" content="">
     <meta name="author" content="Maks Nech">
     <meta name="generator" content="Jekyll v3.8.5">
-    <title>Foods</title>
+    <title>{% block title %}{% endblock %}</title>
 
 
     <!-- Jquery core -->
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
 
     <!-- Bootstrap core  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
             integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
             crossorigin="anonymous"></script>
@@ -42,9 +38,13 @@
         }
       }
 
+
+
+
     </style>
     <!-- Custom styles for this template -->
     <link href="{% static 'foods/css/foods.css' %}" rel="stylesheet">
+
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -59,58 +59,51 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="ingredient_dropdown" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">Ingredients</a>
+                <div class="dropdown-menu" aria-labelledby="ingredient_dropdown">
+                    <a class="dropdown-item" href="{% url 'ingredient_list' %}">List all</a>
+                    <a class="dropdown-item" href="{% url 'ingredient_add' %}">Add new</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dishes_dropdown" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">Dishes</a>
+                <div class="dropdown-menu" aria-labelledby="dishes_dropdown">
+                    <a class="dropdown-item" href="{% url 'dish_list' %}">List all</a>
+                    <a class="dropdown-item" href="{% url 'dish_add' %}">Add new</a>
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET">
-            <input required class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
-                   name="query" value="{{ query }}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        {% block search %}{% endblock %}
     </div>
 </nav>
 
 <main role="main">
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3">Welcome to Foods App!</h1>
-            <p>Here you can select and order ingredients.</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-        </div>
-    </div>
+    {% block jumbotron %}{% endblock %}
+    {% block content %}{% endblock %}
+    <hr>
 
-    <div class="container">
-
-        <div class="row">
-            {% block content %}{% endblock %}
-        </div>
-
-        <hr>
-
-    </div> <!-- /container -->
 
 </main>
 
-<footer class="container">
-    <p>&copy; Copyright 2019 by Maksym Nechypurenko</p>
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; Copyright 2019 by Maksym Nechypurenko</p>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
 </footer>
 
 </body>
+<!-- Custom JavaScript for this template -->
+<script src="{% static 'foods/js/foods.js' %}"></script>
 
 </html>
 

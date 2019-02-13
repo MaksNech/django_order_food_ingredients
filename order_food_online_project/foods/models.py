@@ -1,5 +1,6 @@
 from django.db import models
-from django import forms
+from django.forms import ModelForm
+
 import uuid
 
 
@@ -99,3 +100,6 @@ class OrderIngredients(models.Model):
     def __str__(self):
         return "Order: {} | Ingredient: {} | Quantity: {} | Cost: {}".format(self.order, self.ingredient, self.quantity,
                                                                              self.cost)
+
+
+

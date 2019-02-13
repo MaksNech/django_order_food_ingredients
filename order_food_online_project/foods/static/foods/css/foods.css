@@ -2,3 +2,13 @@
 body {
   padding-top: 3.5rem;
 }
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+.container {
+  max-width: 960px;
+}
+
+.lh-condensed { line-height: 1.25; }
