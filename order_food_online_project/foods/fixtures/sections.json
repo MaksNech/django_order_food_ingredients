@@ -1,0 +1,26 @@
+[
+  {
+    "model": "foods.section",
+    "pk": 1,
+    "fields": {
+      "name": "First Courses",
+      "created_on": "2018-03-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.section",
+    "pk": 2,
+    "fields": {
+      "name": "Second Courses",
+      "created_on": "2018-02-01T13:20:30+03:00"
+    }
+  },
+    {
+    "model": "foods.section",
+    "pk": 3,
+    "fields": {
+      "name": "Desserts",
+      "created_on": "2018-01-01T13:20:30+03:00"
+    }
+  }
+]

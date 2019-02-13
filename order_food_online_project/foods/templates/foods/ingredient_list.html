@@ -1,0 +1,49 @@
+{% extends "foods/base.html" %}
+{% block title %}Foods-Ingredient{% endblock %}
+{% block search %}
+<form class="form-inline my-2 my-lg-0" action="{% url 'ingredient_search' %}" method="GET">
+    <input required class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+           name="query" value="{{ query }}">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+{% endblock %}
+{% block content %}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <h2>Ingredients</h2>
+        </div>
+
+        <div class="row">
+            {% if ingredients %}
+            {% for ingredient in ingredients %}
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg width="400" height="300" viewBox="0 0 600 700" preserveAspectRatio="none"
+                         class="bd-placeholder-img card-img-top"
+                         focusable="false"
+                         role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title>
+                        <image xlink:href="{{ ingredient.img.url }}" clip-path="url(#circleView)"/>
+                    </svg>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ingredient.name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{% url 'ingredient_view' ingredient.id %}" class="btn btn-sm btn-outline-secondary" role="button" aria-pressed="true">View</a>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                            </div>
+                            <small class="text-muted">{{ ingredient.created_on }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No ingredients match your search criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

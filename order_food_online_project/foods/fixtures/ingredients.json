@@ -1,0 +1,122 @@
+[
+  {
+    "model": "foods.ingredient",
+    "pk": 1,
+    "fields": {
+      "name": "Flour",
+      "img": "/ingredients/Flour.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.1,
+      "created_on": "2011-09-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 2,
+    "fields": {
+      "name": "Mozzarella",
+      "img": "/ingredients/Mozzarella.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.5,
+      "created_on": "2014-09-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 3,
+    "fields": {
+      "name": "Olive Oil",
+      "img": "/ingredients/OliveOil.jpg",
+      "quantity": 10,
+      "unit": "ml",
+      "cost": 0.1,
+      "created_on": "2015-09-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 4,
+    "fields": {
+      "name": "Pork",
+      "img": "/ingredients/Pork.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.2,
+      "created_on": "2018-09-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 5,
+    "fields": {
+      "name": "Sugar",
+      "img": "/ingredients/Sugar.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.05,
+      "created_on": "2019-09-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 6,
+    "fields": {
+      "name": "Salt",
+      "img": "/ingredients/Salt.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.06,
+      "created_on": "2017-08-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 7,
+    "fields": {
+      "name": "Cinnamon",
+      "img": "/ingredients/Cinnamon.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.3,
+      "created_on": "2019-10-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 8,
+    "fields": {
+      "name": "Tomato Sauce",
+      "img": "/ingredients/TomatoSauce.jpg",
+      "quantity": 10,
+      "unit": "ml",
+      "cost": 0.1,
+      "created_on": "2019-02-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 9,
+    "fields": {
+      "name": "Butter",
+      "img": "/ingredients/Butter.jpg",
+      "quantity": 10,
+      "unit": "ml",
+      "cost": 0.1,
+      "created_on": "2019-3-01T13:20:30+03:00"
+    }
+  },
+  {
+    "model": "foods.ingredient",
+    "pk": 10,
+    "fields": {
+      "name": "Beef",
+      "img": "/ingredients/Beef.jpg",
+      "quantity": 10,
+      "unit": "gr",
+      "cost": 0.3,
+      "created_on": "2019-06-01T13:20:30+03:00"
+    }
+  }
+]

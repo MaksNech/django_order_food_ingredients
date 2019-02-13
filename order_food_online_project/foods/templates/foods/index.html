@@ -1,16 +1,20 @@
 {% extends "foods/base.html" %}
+{% block title %}Foods-Home{% endblock %}
+{% block jumbotron %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">Welcome to Foods App!</h1>
+            <p>Here you can select and order ingredients.</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        </div>
+    </div>
+    {% endblock %}
 {% block content %}
-{% if dishes %}
-{% for dish in dishes %}
-<div class="col-md-4">
-    <h2>{{ dish.name }}</h2>
-    <p>{{ dish.description }}</p>
-    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-</div>
-{% endfor %}
-{% else %}
-<p>No dishes match your search criteria.</p>
-{% endif %}
+
+
+<p>Main home page.</p>
+
 {% endblock %}
 
 
