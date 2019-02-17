@@ -39,43 +39,15 @@ $.ajaxSetup({
 // dish_add.html JS ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Add ingredient on submit
-$('#dish_ingredient_submit_btn').click(function(event){
-
+$('#dish_ingredient_add_form').on('submit', function(event){
     event.preventDefault();
     addIngredient();
 });
 
 
 
+// AJAX for add ingredient
 function addIngredient() {
-    var ingredientId = $('#dish_ingredient option:selected').val();
-    var ingredientQuantity = $('#dish_ingredient_quantity').val();
-    var ingredientName=$("#dish_ingredient option:selected").text().split(' |',1)+'';
-    var ingredientUnit='gr' //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! potom sdelat pravilno unit
-
-    // create custom link element of ordered ingredient
-    var ingredientIdName=ingredientName.split(' ').join('_');
-    var $newIngred = $("<a id='"+ingredientId+"-a_id_"+ingredientIdName+"' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center my-delete-link'>Delete "+ ingredientName +"<input type='hidden' form='dish_add_form'  id='dish_ingredient' name='dish_ingredient' value='"+ingredientId+"'><span class='badge badge-primary badge-pill'>"+ingredientQuantity+" "+ingredientUnit+"</span></a>");
-
-
-    // add ingredient element to list
-    $("#dish_ingredient option:selected").attr('disabled','disabled')
-    $('#dish_ingredient').val(null); // remove the value from the select
-    $('#dish_ingredient_submit_btn').attr('disabled', true);
-    $("#ingredient_list_div").prepend($newIngred);
-
-    // delete ingredient element from list
-    $newIngred.bind( "click", function() {
-           event.preventDefault();
-           var delIngredientId=parseInt($(this).attr("id").split('-',1));
-           $("#dish_ingredient option[value=" + delIngredientId + "]").removeAttr('disabled');
-           var $ing = $('#'+$(this).attr("id"));
-           $ing.remove();
-
-    });
-    };
-
-function addIngredient2() {
     $.ajax({
         url : "ingredient/", // the endpoint
         type : "POST", // http method

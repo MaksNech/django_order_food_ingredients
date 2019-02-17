@@ -1,9 +1,10 @@
 import json
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.http import JsonResponse
 from django.db.models import Q
 from .models import Dish, DishIngredients, Ingredient, OrderIngredients, Order, Section
+from .forms import *
 
 
 
@@ -60,15 +61,20 @@ def dish_search(request):
 def dish_add(request):
 
     if request.method == "POST":
+        form = ImageUploadForm(request.POST)
+        if form.is_valid():
+         dish_name=request.POST.get("dish_name")
+         dish_desc=request.POST.get("dish_desc")
+         dish_section = Section.objects.get(id=int(request.POST.get("dish_section")))
+         dish_image = form.cleaned_data['dish_img']
 
-        dish_name=request.POST.get("dish_name")
-        dish_desc=request.POST.get("dish_desc")
-        dish_section = Section.objects.get(id=int(request.POST.get("dish_section")))
-        new_dish = Dish(name=dish_name, description=dish_desc, section=dish_section)
-        new_dish.save()
+         dish_ingredients_list = request.POST.getlist("dish_ingredient")
+         print(dish_ingredients_list)
+         new_dish = Dish(name=dish_name,img=dish_image, description=dish_desc, section=dish_section)
+         new_dish.save()
 
-        ingredients_id_list=request.session['dish_ingredients_dict'].keys()
-        ingredients_id_list = list(map(int, ingredients_id_list))
+        #ingredients_id_list=request.session['dish_ingredients_dict'].keys()
+        #ingredients_id_list = list(map(int, ingredients_id_list))
         # for ingredient_id in ingredients_id_list:
         #     added_ingred=Ingredient.objects.get(id=int(ingredient_id))
         #     new_dish.ingredients.add(added_ingred)

@@ -18,9 +18,8 @@
 
 
             <form class="needs-validation" novalidate id="dish_add_form" action="{% url 'dish_add' %}"
-                  method="post">{% csrf_token %}</form>
+                  method="post" enctype="multipart/form-data">{% csrf_token %}</form>
 
-            <form class="needs-validation" novalidate id="dish_ingredient_add_form" action="ingredient" method="post">{% csrf_token %}</form>
 
             <div class="mb-3">
                 <label for="dish_name">Dish Name</label>
@@ -72,14 +71,14 @@
 
 
             <div class="row align-items-end">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 mb-4">
                     <label for="dish_ingredient">Ingredient</label>
-                    <select class="custom-select d-block w-100" id="dish_ingredient"
-                            form="dish_ingredient_add_form" required>
+                    <select class="custom-select d-block w-100" name="dish_ingredient" id="dish_ingredient"
+                            form="dish_add_form" required>
                         <option selected disabled value="">Choose dish ingredient...</option>
                         {% if ingredients %}
                         {% for ingredient in ingredients %}
-                        <option value="{{ ingredient.id }}">{{ ingredient.name }} ({{ ingredient.unit }})</option>
+                        <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }}</option>
                         {% endfor %}
                         {% endif %}
                     </select>
@@ -87,32 +86,25 @@
                         Please choose dish ingredients.
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6 mb-4">
                     <label for="dish_ingredient_quantity">Quantity</label>
                     <input type="number" min="10" max="9999" step="10" class="form-control"
                            id="dish_ingredient_quantity" placeholder="Quantity" required
-                           form="dish_ingredient_add_form">
+                           form="dish_add_form">
                     <div class="invalid-feedback">
                         Please enter ingredient quantity.
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary" form="dish_ingredient_add_form">Add ingredient
+                    <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary" form="">Add ingredient
                     </button>
                 </div>
             </div>
 
 
             <div class="list-group" id="ingredient_list_div">
-                <!--{% if dish_ingredients %}-->
-                <!--{% for dish_ingredient in dish_ingredients %}-->
-                <!--<a href="#"-->
-                   <!--class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Delete-->
-                    <!--ingredient name<span class="badge badge-primary badge-pill">14</span></a>-->
-                <!--{% endfor %}-->
-                <!--{% endif %}-->
-
+                <!--div for selected ingredients-->
             </div>
 
 
