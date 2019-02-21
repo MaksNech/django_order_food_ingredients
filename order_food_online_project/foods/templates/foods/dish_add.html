@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container">
+
     <div class="py-5 text-center">
         <h2>Dish form</h2>
         <p class="lead">Below is a form in which you can add a new dish.</p>
@@ -13,105 +14,107 @@
         <div class="col-md-12 col-xs-12 col-centered">
             <hr class="mb-4">
             <h4 class="mb-3">Dish details:</h4>
+            <p class="text-muted">Required Field *</p>
 
+            <form class="needs-validation" id="dish_add_form" action="{% url 'dish_add' %}"
+                  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-
-
-            <form class="needs-validation" novalidate id="dish_add_form" action="{% url 'dish_add' %}"
-                  method="post" enctype="multipart/form-data">{% csrf_token %}</form>
-
-
-            <div class="mb-3">
-                <label for="dish_name">Dish Name</label>
-                <input type="text" class="form-control" name="dish_name" id="dish_name" placeholder="Dish Name" required
-                       form="dish_add_form">
-                <div class="invalid-feedback" style="width: 100%;">
-                    Dish name is required.
+                <div class="mb-3">
+                    <label for="{{ form.name.id }}">Name *</label>
+                    <input required type="text" class="form-control" name="{{ form.name.name }}" id="{{ form.name.id }}"
+                           placeholder="Dish Name"
+                           form="dish_add_form">
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Dish name is required.
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label for="dish_img">Dish Image <span class="text-muted">(Optional)</span></label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="dish_img" id="dish_img" form="dish_add_form">
-                    <label class="custom-file-label" for="dish_img">Choose Image</label>
+                <div class="mb-3">
+                    <label for="{{ form.img.id }}">Image *</label>
+                    <div class="custom-file">
+                        <input required type="file" accept="image/*" class="custom-file-input"
+                               name="{{ form.img.name }}"
+                               id="{{ form.img.id }}" form="dish_add_form">
+                        <label class="custom-file-label" for="{{ form.img.id }}">Choose Image</label>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid image path.
+                    </div>
                 </div>
-                <div class="invalid-feedback">
-                    Please enter a valid image path.
+
+                <div class="mb-3">
+                    <label for="{{ form.description.id }}">Description *</label>
+                    <textarea required class="form-control" name="{{ form.description.name }}"
+                              id="{{ form.description.id }}"
+                              rows="3" form="dish_add_form"></textarea>
+                    <div class="invalid-feedback">
+                        Please enter dish description.
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label for="dish_desc">Dish Description</label>
-                <textarea class="form-control" name="dish_desc" id="dish_desc" rows="3" form="dish_add_form"></textarea>
-                <div class="invalid-feedback">
-                    Please enter dish description.
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="mr-sm-2" for="dish_section">Dish Section <span
-                        class="text-muted">(Optional)</span></label>
-                <select class="custom-select mr-sm-2" name="dish_section" id="dish_section" form="dish_add_form">
-                    <option selected disabled value="">Choose dish section...</option>
-                    {% if sections %}
-                    {% for section in sections %}
-                    <option value="{{ section.id }}">{{ section.name }}</option>
-                    {% endfor %}
-                    {% endif %}
-                </select>
-                <div class="invalid-feedback">
-                    Please choose dish section.
-                </div>
-            </div>
-
-
-            <hr class="mb-4">
-            <h4 class="mb-3">Ingredients details:</h4>
-
-
-            <div class="row align-items-end">
-                <div class="col-md-6 mb-4">
-                    <label for="dish_ingredient">Ingredient</label>
-                    <select class="custom-select d-block w-100" name="dish_ingredient" id="dish_ingredient"
-                            form="dish_add_form" required>
-                        <option selected disabled value="">Choose dish ingredient...</option>
-                        {% if ingredients %}
-                        {% for ingredient in ingredients %}
-                        <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }}</option>
+                <div class="mb-3">
+                    <label class="mr-sm-2" for="{{ form.section.id }}">Section *</label>
+                    <select required class="custom-select mr-sm-2" name="{{ form.section.name }}"
+                            id="{{ form.section.id }}"
+                            form="dish_add_form">
+                        <option selected disabled value="">Choose dish section...</option>
+                        {% if sections %}
+                        {% for section in sections %}
+                        <option value="{{ section.id }}">{{ section.name }}</option>
                         {% endfor %}
                         {% endif %}
                     </select>
                     <div class="invalid-feedback">
-                        Please choose dish ingredients.
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <label for="dish_ingredient_quantity">Quantity</label>
-                    <input type="number" min="10" max="9999" step="10" class="form-control"
-                           id="dish_ingredient_quantity" placeholder="Quantity" required
-                           form="dish_add_form">
-                    <div class="invalid-feedback">
-                        Please enter ingredient quantity.
+                        Please choose dish section.
                     </div>
                 </div>
 
-                <div class="col-md-4 mb-4">
-                    <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary" form="">Add ingredient
-                    </button>
+                <hr class="mb-4">
+                <h4 class="mb-3">Ingredients details:</h4>
+
+                <div class="row align-items-end">
+                    <div class="col-md-6 mb-4">
+                        <label for="dish_ingredient">Ingredient <span
+                                class="text-muted">(Optional)</span></label>
+                        <select class="custom-select d-block w-100" name="dish_ingredient" id="dish_ingredient"
+                                form="dish_add_form">
+                            <option selected disabled value="">Choose dish ingredient...</option>
+                            {% if ingredients %}
+                            {% for ingredient in ingredients %}
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Please choose dish ingredients.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label for="dish_ingredient_quantity">Quantity <span
+                                class="text-muted">(Optional)</span></label>
+                        <input type="number" min="10" max="9999" step="10" class="form-control"
+                               id="dish_ingredient_quantity" name="dish_ingredient_quantity" placeholder="Quantity"
+                               form="dish_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient quantity.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary">Add ingredient
+                        </button>
+                    </div>
                 </div>
-            </div>
 
+                <div class="list-group" id="ingredient_list_div">
+                    <!--div for selected ingredients-->
+                </div>
 
-            <div class="list-group" id="ingredient_list_div">
-                <!--div for selected ingredients-->
-            </div>
+                <hr class="mb-4">
 
-
-            <hr class="mb-4">
-
-            <button class="btn btn-primary btn-lg btn-block" type="submit" form="dish_add_form">Add dish</button>
-
+                <button class="btn btn-primary btn-lg btn-block" type="submit" form="dish_add_form">Add dish</button>
+            </form>
         </div>
     </div>
 </div>

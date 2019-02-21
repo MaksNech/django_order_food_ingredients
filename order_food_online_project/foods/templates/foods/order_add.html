@@ -1,0 +1,141 @@
+{% extends "foods/base.html" %}
+{% block title %}Foods-Cart-View{% endblock %}
+{% block content %}
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>Order form</h2>
+        <p class="lead">Below is a form in which you can place an order.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-xs-12 col-centered">
+            <hr class="mb-4">
+            <h4 class="mb-3">Customer details:</h4>
+            <p class="text-muted">Required Field *</p>
+
+            <form class="needs-validation" id="order_add_form" action="{% url 'order_add' %}"
+                  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row align-items-end">
+                    <div class="col-md-6 mb-4">
+                        <label for="{{ form.customer.id }}">Name *</label>
+                        <input required type="text" class="form-control" name="{{ form.customer.name }}"
+                               id="{{ form.customer.id }}"
+                               placeholder="Customer Name"
+                               form="order_add_form">
+                        <div class="invalid-feedback" style="width: 100%;">
+                            Customer name is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label for="customer_phone">Phone *</label>
+                        <input type="text" id="customer_phone" name="customer_phone" placeholder="Customer Phone"
+                               class="form-control input-medium bfh-phone" data-format="+38 (ddd) ddd-dddd"
+                               form="order_add_form">
+                        <div class="invalid-feedback" style="width: 100%;">
+                            Customer name is required.
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <h4 class="mb-3">Ingredients details:</h4>
+
+                <div class="row align-items-end">
+                    <div class="col-md-3 mb-4">
+                        <label for="order_ingredient">Ingredient *
+                            <small class="text-muted">(Ingredient | Unit | Cost per 10 units)</small>
+                        </label>
+                        <select class="custom-select d-block w-100" name="order_ingredient" id="order_ingredient"
+                                form="order_add_form">
+                            <option selected disabled value="">Choose ingredient for order...</option>
+                            {% if ingredients %}
+                            {% for ingredient in ingredients %}
+                            <!--don't format option tag below !!! Otherwise an error will occur -->
+                            <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }} |
+                                {{ ingredient.cost }}
+                            </option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Please choose ingredients for order.
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="order_ingredient_quantity">Quantity *</label>
+                        <input type="number" min="10" max="9999" step="10" class="form-control"
+                               id="order_ingredient_quantity" name="order_ingredient_quantity" placeholder="Quantity"
+                               form="order_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient quantity.
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="order_ingredient_cost">Cost *
+                            <small class="text-muted">UAH</small>
+                        </label>
+                        <input readonly type="number" min="0" max="9999" step="0.05"
+                               class="form-control"
+                               id="order_ingredient_cost" name="order_ingredient_cost" placeholder="Cost"
+                               form="order_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient cost.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <button type="submit" id="order_ingredient_submit_btn" class="btn btn-primary">Add ingredient
+                        </button>
+                    </div>
+                </div>
+
+                <div class="list-group" id="order_ingredient_list_div">
+                    <!--div for selected ingredients-->
+                    {% for order_ingredient in order_ingredients %}
+                    <input type='hidden' form='order_add_form' id='order_ingredient_added'
+                           name='order_ingredient_added[]'
+                           value='{"name":"{{ order_ingredient.ingredient.name }}", "id":{{ order_ingredient.ingredient.id }},
+                        "unit":"{{ order_ingredient.ingredient.unit }}", "quantity":{{ order_ingredient.quantity }},
+                         "cost":{{ order_ingredient.cost }}}'>
+                    {% endfor %}
+
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="row align-items-end">
+                    <div class="col-md-6 mb-4">
+                    </div>
+                    <div class="col-md-3 mb-4">
+
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="{{ form.cost.id }}">Total:
+                            <small class="text-muted">UAH</small>
+                        </label>
+                        <input readonly type="number" min="0" max="9999" step="0.05"
+                               class="form-control order-total" value="0"
+                               id="{{ form.cost.id }}" name="{{ form.cost.name }}" placeholder="Cost"
+                               form="order_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient cost.
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit" form="order_add_form">Place order
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

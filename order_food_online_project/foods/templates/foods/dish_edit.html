@@ -1,0 +1,160 @@
+{% extends "foods/base.html" %}
+{% block title %}Foods-Dish-Edit{% endblock %}
+{% block content %}
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>Dish form</h2>
+        <p class="lead">Below is a form in which you can edit the dish.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-xs-12 col-centered">
+            <hr class="mb-4">
+            <h4 class="mb-3">Dish details:</h4>
+            <p class="text-muted">Required Field *</p>
+
+            <form class="needs-validation" id="dish_add_form" action="{% url 'dish_edit' dish.id %}"
+                  method="post" enctype="multipart/form-data">{% csrf_token %}
+            </form>
+            <form class="needs-validation" id="dish_delete_form" action="{% url 'dish_delete' dish.id %}"
+                  method="post" enctype="multipart/form-data">{% csrf_token %}
+            </form>
+
+            <div class="mb-3">
+                <label for="{{ form.name.id }}">Name *</label>
+                <input required type="text" class="form-control" name="{{ form.name.name }}" id="{{ form.name.id }}"
+                       placeholder="Dish Name"
+                       form="dish_add_form" value="{{ dish.name }}">
+                <div class="invalid-feedback" style="width: 100%;">
+                    Dish name is required.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.img.id }}">Image *</label>
+                <div class="custom-file">
+                    <input type="file" accept="image/*" class="custom-file-input" name="{{ form.img.name }}"
+                           id="{{ form.img.id }}" form="dish_add_form" value="{{ dish.img }}">
+                    <label class="custom-file-label" for="{{ form.img.id }}">{{ dish.img }}</label>
+                </div>
+                <div class="invalid-feedback">
+                    Please enter a valid image path.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.description.id }}">Description *</label>
+                <textarea required class="form-control" name="{{ form.description.name }}"
+                          id="{{ form.description.id }}"
+                          rows="3" form="dish_add_form">{{ dish.description }}</textarea>
+                <div class="invalid-feedback">
+                    Please enter dish description.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="mr-sm-2" for="{{ form.section.id }}">Section *</label>
+                <select required class="custom-select mr-sm-2" name="{{ form.section.name }}" id="{{ form.section.id }}"
+                        form="dish_add_form">
+                    <option disabled value="">Choose dish section...</option>
+                    {% if sections %}
+                    {% for section in sections %}
+                    {% if dish.section.id == section.id %}
+                    <option selected value="{{ section.id }}">{{ section.name }}</option>
+                    {% else %}
+                    <option value="{{ section.id }}">{{ section.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </select>
+                <div class="invalid-feedback">
+                    Please choose dish section.
+                </div>
+            </div>
+
+            <hr class="mb-4">
+            <h4 class="mb-3">Ingredients details:</h4>
+
+
+            <div class="row align-items-end">
+                <div class="col-md-6 mb-4">
+                    <label for="dish_ingredient">Ingredient <span
+                            class="text-muted">(Optional)</span></label>
+                    <select class="custom-select d-block w-100" name="dish_ingredient" id="dish_ingredient"
+                            form="dish_add_form">
+                        <option selected disabled value="">Choose dish ingredient...</option>
+                        {% if ingredients %}
+                        {% for ingredient in ingredients %}
+                        <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Please choose dish ingredients.
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label for="dish_ingredient_quantity">Quantity <span
+                            class="text-muted">(Optional)</span></label>
+                    <input type="number" min="10" max="9999" step="10" class="form-control"
+                           id="dish_ingredient_quantity" placeholder="Quantity"
+                           form="dish_add_form">
+                    <div class="invalid-feedback">
+                        Please enter ingredient quantity.
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary">Add ingredient
+                    </button>
+                </div>
+            </div>
+
+            <div class="list-group" id="ingredient_list_div">
+                <!--div for selected ingredients-->
+
+                {% for dish_ingredient in dish_ingredients %}
+                <input type='hidden' form='dish_add_form' id='dish_ingredient_added' name='dish_ingredient_added[]'
+                       value='{"name":"{{ dish_ingredient.ingredient.name }}", "id":{{ dish_ingredient.ingredient.id }},
+                        "unit":"{{ dish_ingredient.ingredient.unit }}", "quantity":{{ dish_ingredient.quantity }}}'>
+                {% endfor %}
+
+            </div>
+
+            <hr class="mb-4">
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit" form="dish_add_form">Save changes</button>
+            <!-- Button trigger modal -->
+            <button class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#exampleModalCenter">Delete
+                dish
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this dish?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, close</button>
+                <button type="submit" class="btn btn-primary" form="dish_delete_form">Yes, delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

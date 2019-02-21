@@ -1,28 +1,46 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Ingredient-View{% endblock %}
+{% block title %}Foods-Order-View{% endblock %}
 
 {% block content %}
 
-{% if ingredient %}
+{% if order %}
 
 <div class="album py-5 bg-light">
     <div class="container">
 
         <div class="row">
             <div class="col-md-8 blog-main">
-                <h3 class="pb-3 mb-4 font-italic border-bottom">{{ ingredient.name }}</h3>
+                <h3 class="pb-3 mb-4 font-italic border-bottom">№ {{ order.number }}</h3>
 
                 <div class="blog-post">
-                    {% if ingredient.img %}
-                    <img src="{{ ingredient.img.url }}" class="rounded mx-auto d-block img-fluid"
-                         alt="{ ingredient.name }}"
-                         width="460" height="345"><br>
-                    {% endif %}
-                    <h3 class="blog-post-title"> Ingredient info:</h3>
-                    <p class="blog-post-meta">{{ ingredient.created_on }} by <a href="#">Mark</a></p>
+                    <h3 class="blog-post-title"> Order info:</h3>
+                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
                     <hr>
-                    <h3>Cost: {{ingredient.cost}} <span class="text-muted">(UAH)</span> per {{ingredient.quantity}}
-                        {{ingredient.unit}}.</h3>
+                    <p>Customer: {{ order.customer }}</p>
+                    <hr>
+                    <p>Status: {{ order.status }}</p>
+                    {% if ingredients %}
+                    <hr>
+                    <p>Ingredients:</p>
+                    <div class="row align-items-end">
+                        <div class="col-md-12 mb-4">
+                            <div class="list-group">
+                                {% for ingredient in ingredients %}
+                                <a href="{% url 'ingredient_view' ingredient.id %}"
+                                   id="{{ingredient.id}}_ingredient_view"
+                                   class='list-group-item list-group-item-action d-flex align-items-center
+                                   justify-content-between'><span>{{ingredient.name}}:</span><span>{{ingredient.cost}}
+                                    <small class="text-muted"> (UAH) per</small></span>
+                                    <span class='badge badge-primary badge-pill'>
+                                        {{ingredient.quantity}} {{ingredient.unit}}</span></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <p>Total: {{ order.cost }}</p>
+
                 </div>
 
                 <nav class="blog-pagination">
@@ -74,7 +92,7 @@
 </div>
 
 {% else %}
-<p>Ingredient is not found.</p>
+<p>Order is not found.</p>
 {% endif %}
 
 {% endblock %}

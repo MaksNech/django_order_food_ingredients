@@ -1,5 +1,5 @@
 //Set CSRF Tokken into AJAX Request ////////////////////////////////////////////////////////////////////////////////////
-
+//The Begin
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -32,30 +32,59 @@ $.ajaxSetup({
         }
     }
 });
+//The End
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-// dish_add.html JS ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Add ingredient on submit
+
+
+
+// dish_add.html & dish_edit.html JS ////////////////////////////////////////////////////////////////////////////////////////////////////
+//The Begin
+
+// Add ingredient to dish on submit
 $('#dish_ingredient_submit_btn').click(function(event){
 
     event.preventDefault();
-    addIngredient();
+    addIngredientDish();
 });
 
+function addAddedIngredientDish() {
+
+    var values = $("input[id='dish_ingredient_added']").map(function(){return $(this).val();}).get();
+    for (i in values) {
+    var ingredientAdded=JSON.parse(values[i]);
+
+    addIngredientDish(addedIngredient=true,ingredientAdded.id,ingredientAdded.quantity,ingredientAdded.name, ingredientAdded.unit);
+    };
+};
 
 
-function addIngredient() {
-    var ingredientId = $('#dish_ingredient option:selected').val();
-    var ingredientQuantity = $('#dish_ingredient_quantity').val();
-    var ingredientName=$("#dish_ingredient option:selected").text().split(' |',1)+'';
-    var ingredientUnit='gr' //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! potom sdelat pravilno unit
 
-    // create custom link element of ordered ingredient
+function addIngredientDish(addedIngredient=false,ingredientId=null,ingredientQuantity=null,ingredientName=null, ingredientUnit=null) {
+
+    if (addedIngredient==false){
+        var ingredientId = $('#dish_ingredient option:selected').val();
+        var ingredientQuantity = $('#dish_ingredient_quantity').val();
+        var ingredientName=$("#dish_ingredient option:selected").text().split(' | ',1)+'';
+        var ingredientUnit=$("#dish_ingredient option:selected").text().split(' | ',2)[1]+'';
+
+        }
+    else{
+        var ingredientId = ingredientId;
+        var ingredientQuantity = ingredientQuantity;
+        var ingredientName=ingredientName;
+        var ingredientUnit=ingredientUnit;
+
+        $("#dish_ingredient option[value="+ingredientId+"]").attr('disabled','disabled')
+
+    };
+
+    //create custom link element of ordered ingredient
     var ingredientIdName=ingredientName.split(' ').join('_');
-    var $newIngred = $("<a id='"+ingredientId+"-a_id_"+ingredientIdName+"' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center my-delete-link'>Delete "+ ingredientName +"<input type='hidden' form='dish_add_form'  id='dish_ingredient' name='dish_ingredient' value='"+ingredientId+"'><span class='badge badge-primary badge-pill'>"+ingredientQuantity+" "+ingredientUnit+"</span></a>");
+    var $newIngred = $("<a id='"+ingredientId+"-a_id_"+ingredientIdName+"' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center my-delete-link'>Delete "+ ingredientName +"<input type='hidden' form='dish_add_form'  id='dish_ingredient' name='dish_ingredient' value='"+ingredientId+'|'+ingredientQuantity+"'><span class='badge badge-primary badge-pill'>"+ingredientQuantity+" "+ingredientUnit+"</span></a>");
 
 
     // add ingredient element to list
@@ -75,7 +104,7 @@ function addIngredient() {
     });
     };
 
-function addIngredient2() {
+function addIngredientAjax() {
     $.ajax({
         url : "ingredient/", // the endpoint
         type : "POST", // http method
@@ -115,11 +144,105 @@ function addIngredient2() {
         }
     });
 };
+//The End
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// order_add.html JS ////////////////////////////////////////////////////////////////////////////////////////////////////
+//The Begin
+
+// Add ingredient to order on submit
+$('#order_ingredient_submit_btn').click(function(event){
+
+    event.preventDefault();
+    addIngredientOrder();
+});
+
+function addAddedIngredientOrder() {
+
+    var values = $("input[id='order_ingredient_added']").map(function(){return $(this).val();}).get();
+    for (i in values) {
+    var ingredientAdded=JSON.parse(values[i]);
+
+    addIngredientOrder(addedIngredient=true,ingredientAdded.id,ingredientAdded.quantity,ingredientAdded.name, ingredientAdded.unit, ingredientAdded.cost);
+    };
+};
+
+
+
+function addIngredientOrder(addedIngredient=false,ingredientId=null,ingredientQuantity=null,ingredientName=null, ingredientUnit=null, ingredientCost=null) {
+
+    if (addedIngredient==false){
+        var ingredientId = $('#order_ingredient option:selected').val();
+        var ingredientQuantity = $('#order_ingredient_quantity').val();
+        var ingredientName=$("#order_ingredient option:selected").text().split('|',1)+'';
+        var ingredientUnit=$("#order_ingredient option:selected").text().split('|',2)[1]+'';
+        var ingredientCost=$("#order_ingredient_cost").val()
+        }
+    else{
+        var ingredientId = ingredientId;
+        var ingredientQuantity = ingredientQuantity;
+        var ingredientName=ingredientName;
+        var ingredientUnit=ingredientUnit;
+        var ingredientCost=ingredientCost;
+
+
+        $("#order_ingredient option[value="+ingredientId+"]").attr('disabled','disabled')
+    };
+
+    // add ingredient cost to total
+    var total= parseFloat($('.order-total').val());
+    total+=parseFloat(ingredientCost);
+    $('.order-total').val(total.toFixed(2));
+
+    //create custom link element of ordered ingredient
+    var ingredientIdName=ingredientName.split(' ').join('_');
+    var $newOrderIngred = $("<a id='"+ingredientId+"-a_id_"+ingredientIdName+"' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center my-delete-link'>Delete "+ ingredientName +"<input type='hidden' form='order_add_form'  id='order_ingredient' name='order_ingredient' value='"+ingredientId+'|'+ingredientQuantity+'|'+ingredientCost+"'><span class='badge badge-primary badge-pill'>"+ingredientQuantity+" "+ingredientUnit+"</span>  <span class='badge badge-primary badge-pill'>"+ingredientCost+" UAH</span></a>");
+
+
+    // add ingredient element to list
+    $("#order_ingredient option:selected").attr('disabled','disabled')
+    $('#order_ingredient').val(null); // remove the value from the select
+    $('#order_ingredient_quantity').val(null); // remove the value from the quantity
+    $('#order_ingredient_cost').val(null); // remove the value from the cost
+    $('#order_ingredient_submit_btn').attr('disabled', true);
+    $("#order_ingredient_list_div").prepend($newOrderIngred);
+
+    // delete ingredient element from list
+    $newOrderIngred.bind( "click", function() {
+           event.preventDefault();
+
+           // remove ingredient cost from total
+           var total= parseFloat($('.order-total').val());
+           var ingredientData=$(this).children("input").val()
+           var ingredientCost=ingredientData.split('|',3)[2]+'';
+           total-=parseFloat(ingredientCost);
+           $('.order-total').val(total.toFixed(2));
+
+           var delIngredientId=parseInt($(this).attr("id").split('-',1));
+           $("#order_ingredient option[value=" + delIngredientId + "]").removeAttr('disabled');
+           var $ing = $('#'+$(this).attr("id"));
+           $ing.remove();
+
+    });
+    };
+
+
+//The End
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 $(document).ready(function () {
 
+
+
+// dish_add.html & dish_edit.html JS //////////////////////////////////////////////
+//The Begin
+
     $('#dish_ingredient_submit_btn').attr('disabled', true);
+
     $('#dish_ingredient,#dish_ingredient_quantity').on('change', function () {
         var selectValue = $("#dish_ingredient").val();
         var inputValue = $('#dish_ingredient_quantity').val();
@@ -130,6 +253,52 @@ $(document).ready(function () {
         }
     });
 
+    $('.custom-file-input').on('change',function(){
+                var fileName = $(this).val();
+                $(this).next('.custom-file-label').html(fileName);
+    });
+
+    addAddedIngredientDish();
+
+//The End
+///////////////////////////////////////////////////////////////////////////////////
+
+// order_add.html JS //////////////////////////////////////////////////////////////
+//The Begin
+
+    if (typeof orderCounter === 'undefined'){
+        var orderCounter=0;
+        $('#order_counter').text(orderCounter);
+    };
+
+
+    $('#order_ingredient_submit_btn').attr('disabled', true);
+
+    $('#order_ingredient,#order_ingredient_quantity').on('change', function () {
+        var selectValue = $("#order_ingredient").val();
+        var inputValue = $('#order_ingredient_quantity').val();
+        if (selectValue != null && inputValue != '') {
+            $('#order_ingredient_submit_btn').attr('disabled', false);
+        } else {
+            $('#order_ingredient_submit_btn').attr('disabled', true);
+        }
+    });
+
+    $('#order_ingredient_quantity,#order_ingredient').on('click',function(){
+
+                if($("#order_ingredient option:selected").val()){
+                   var cost=$("#order_ingredient option:selected").text().split('|',3)[2]+'';
+                   cost=parseFloat(cost);
+                   var quantity=$('#order_ingredient_quantity').val();
+                   var total=quantity*cost/10;
+                   $("#order_ingredient_cost").val(total.toFixed(2));
+                };
+    });
+
+    addAddedIngredientOrder();
+
+//The End
+///////////////////////////////////////////////////////////////////////////////////
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

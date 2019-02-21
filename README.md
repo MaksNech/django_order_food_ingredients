@@ -79,6 +79,14 @@ python manage.py makemigrations
 
 python manage.py migrate
 ```
+#### Inside the project directory set the initial data with fixtures:
+```bash
+python manage.py loaddata sections.json
+
+python manage.py loaddata ingredients.json
+
+python manage.py loaddata dishes.json
+```
 #### Inside the project directory create an administrative account by typing:
 ```bash
 python manage.py createsuperuser

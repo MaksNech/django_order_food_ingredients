@@ -9,45 +9,44 @@
     <meta name="generator" content="Jekyll v3.8.5">
     <title>{% block title %}{% endblock %}</title>
 
-
     <!-- Jquery core -->
     <!--<script src="https://code.jquery.com/jquery-3.3.1.js"-->
-            <!--integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>-->
-
+    <!--integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>-->
     <script src="{% static 'foods/js/jquery-3.3.1.js' %}"></script>
 
     <!-- Bootstrap core  -->
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
-          <!--integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
-
+    <!--integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
     <link href="{% static 'foods/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"-->
-            <!--integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"-->
-            <!--crossorigin="anonymous"></script>-->
+    <!--integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"-->
+    <!--crossorigin="anonymous"></script>-->
     <script src="{% static 'foods/bootstrap/js/popper.min.js' %}"></script>
     <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"-->
-            <!--integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"-->
-            <!--crossorigin="anonymous"></script>-->
+    <!--integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"-->
+    <!--crossorigin="anonymous"></script>-->
     <script src="{% static 'foods/bootstrap/js/bootstrap.min.js' %}"></script>
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-      }
+    <!-- Font-awesome styles  -->
+    <link rel="stylesheet" href="{% static 'foods/font-awesome/css/font-awesome.min.css' %}">
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
+    <!-- Formhelpers-phone script  -->
+    <script src="{% static 'foods/js/bootstrap-formhelpers-phone.js' %}"></script>
 
-
-
-
-    </style>
     <!-- Custom styles for this template -->
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
     <link href="{% static 'foods/css/foods.css' %}" rel="stylesheet">
 
 </head>
@@ -62,40 +61,57 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'index' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="ingredient_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false">Ingredients</a>
+                   aria-expanded="false"><i class="fa fa-lemon-o" aria-hidden="true"></i> Ingredients</a>
                 <div class="dropdown-menu" aria-labelledby="ingredient_dropdown">
-                    <a class="dropdown-item" href="{% url 'ingredient_list' %}">List all</a>
-                    <a class="dropdown-item" href="{% url 'ingredient_add' %}">Add new</a>
+                    <a class="dropdown-item" href="{% url 'ingredient_list' %}"><i class="fa fa-th-list"
+                                                                                   aria-hidden="true"></i> List all</a>
+                    <a class="dropdown-item" href="{% url 'ingredient_add' %}"><i class="fa fa-plus"
+                                                                                  aria-hidden="true"></i> Add new</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dishes_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false">Dishes</a>
+                   aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i> Dishes</a>
                 <div class="dropdown-menu" aria-labelledby="dishes_dropdown">
-                    <a class="dropdown-item" href="{% url 'dish_list' %}">List all</a>
-                    <a class="dropdown-item" href="{% url 'dish_add' %}">Add new</a>
+                    <a class="dropdown-item" href="{% url 'dish_list' %}"><i class="fa fa-th-list"
+                                                                             aria-hidden="true"></i> List all</a>
+                    <a class="dropdown-item" href="{% url 'dish_add' %}"> <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add new</a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="orders_dropdown" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span
+                        class="badge badge-success" id="order_counter"></span></a>
+                <div class="dropdown-menu" aria-labelledby="dishes_dropdown">
+                    <a class="dropdown-item" href="{% url 'order_list' %}"><i class="fa fa-th-list"
+                                                                              aria-hidden="true"></i> List orders</a>
+                    <a class="dropdown-item" href="{% url 'order_add' %}"> <i class="fa fa-plus" aria-hidden="true"></i>
+                        Place order</a>
+                </div>
+            </li>
+
         </ul>
         {% block search %}{% endblock %}
+
     </div>
 </nav>
 
 <main role="main">
-
     {% block jumbotron %}{% endblock %}
+
+    {% block carousel %}{% endblock %}
+
     {% block content %}{% endblock %}
     <hr>
-
-
 </main>
-
 
 <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; Copyright 2019 by Maksym Nechypurenko</p>
