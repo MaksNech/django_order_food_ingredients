@@ -15,7 +15,7 @@
       "created_on": "2018-02-01T13:20:30+03:00"
     }
   },
-    {
+  {
     "model": "foods.section",
     "pk": 3,
     "fields": {

@@ -1,7 +1,99 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Add Ingredient{% endblock %}
+{% block title %}Foods-Ingredient-Add{% endblock %}
 {% block content %}
 
-<p>Add ingredient.</p>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Ingredient form</h2>
+        <p class="lead">Below is a form in which you can add a new ingredient.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-xs-12 col-centered">
+            <hr class="mb-4">
+            <h4 class="mb-3">Ingredient details:</h4>
+            <p class="text-muted">Required Field *</p>
+
+            <form class="needs-validation" id="ingredient_add_form" action="{% url 'ingredient_add' %}"
+                  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="{{ form.name.id }}">Name *</label>
+                    <input required type="text" class="form-control" name="{{ form.name.name }}" id="{{ form.name.id }}"
+                           placeholder="Ingredient Name"
+                           form="ingredient_add_form">
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Ingredient name is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.img.id }}">Image *</label>
+                    <div class="custom-file">
+                        <input required type="file" accept="image/*" class="custom-file-input"
+                               name="{{ form.img.name }}"
+                               id="{{ form.img.id }}" form="ingredient_add_form">
+                        <label class="custom-file-label" for="{{ form.img.id }}">Choose Image</label>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid image path.
+                    </div>
+                </div>
+
+                <div class="row align-items-end">
+                    <div class="col-md-3 mb-4">
+                        <label for="{{ form.cost.id }}">Cost *
+                            <small
+                                    class="text-muted">UAH
+                            </small>
+                            <span class="text-muted">(Optional)</span></label>
+                        <input required type="number" min="0" max="9999" step="0.05" class="form-control"
+                               id="{{ form.cost.id }}" name="{{ form.cost.name }}" placeholder="Cost"
+                               form="ingredient_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient cost.
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <span class="text-muted"> per : </span>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="{{ form.quantity.id }}">Quantity</label>
+                        <input readonly type="number" min="10" max="9999" step="10" class="form-control"
+                               id="{{ form.quantity.id }}" name="{{ form.quantity.name }}"
+                               value="{{ form.quantity.value }}" placeholder="Quantity"
+                               form="ingredient_add_form">
+                        <div class="invalid-feedback">
+                            Please enter ingredient quantity.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <label class="mr-sm-2" for="{{ form.unit.id }}">Unit *</label>
+                        <select required class="custom-select mr-sm-2" name="{{ form.unit.name }}"
+                                id="{{ form.unit.id }}"
+                                form="ingredient_add_form">
+                            <option selected disabled value="">Choose ingredient unit...</option>
+                            <option value="gr">gr</option>
+                            <option value="ml">ml</option>
+
+                        </select>
+                        <div class="invalid-feedback">
+                            Please choose ingredient unit.
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit" form="ingredient_add_form">Add ingredient
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

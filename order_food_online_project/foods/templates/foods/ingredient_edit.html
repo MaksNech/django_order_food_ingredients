@@ -1,0 +1,134 @@
+{% extends "foods/base.html" %}
+{% block title %}Foods-Ingredient-Edit{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Ingredient form</h2>
+        <p class="lead">Below is a form in which you can edit the ingredient.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-xs-12 col-centered">
+            <hr class="mb-4">
+            <h4 class="mb-3">Ingredient details:</h4>
+            <p class="text-muted">Required Field *</p>
+
+            <form class="needs-validation" id="ingredient_edit_form" action="{% url 'ingredient_edit' ingredient.id %}"
+                  method="post" enctype="multipart/form-data">{% csrf_token %}
+            </form>
+
+            <form class="needs-validation" id="ingredient_delete_form"
+                  action="{% url 'ingredient_delete' ingredient.id %}"
+                  method="post" enctype="multipart/form-data">{% csrf_token %}
+            </form>
+
+            <div class="mb-3">
+                <label for="{{ form.name.id }}">Name *</label>
+                <input required type="text" class="form-control" name="{{ form.name.name }}" id="{{ form.name.id }}"
+                       placeholder="Ingredient Name"
+                       form="ingredient_edit_form" value="{{ ingredient.name }}">
+                <div class="invalid-feedback" style="width: 100%;">
+                    Ingredient name is required.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.img.id }}">Image *</label>
+                <div class="custom-file">
+                    <input type="file" accept="image/*" class="custom-file-input edit" name="{{ form.img.name }}"
+                           id="{{ form.img.id }}" form="ingredient_edit_form" value="{{ ingredient.img }}">
+                    <label class="custom-file-label" for="{{ form.img.id }}">{{ ingredient.img }}</label>
+                </div>
+                <div class="invalid-feedback">
+                    Please enter a valid image path.
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-md-3 mb-4">
+                    <label for="{{ form.cost.id }}">Cost *
+                        <small
+                                class="text-muted">UAH
+                        </small>
+                        <span class="text-muted">(Optional)</span></label>
+                    <input required type="number" min="0" max="9999" step="0.05" class="form-control"
+                           id="{{ form.cost.id }}" name="{{ form.cost.name }}" placeholder="Cost"
+                           form="ingredient_edit_form" value="{{ ingredient.cost }}">
+                    <div class="invalid-feedback">
+                        Please choose dish ingredients.
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <span class="text-muted"> per : </span>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <label for="{{ form.quantity.id }}">Quantity</label>
+                    <input readonly type="number" min="10" max="9999" step="10" class="form-control"
+                           id="{{ form.quantity.id }}" name="{{ form.quantity.name }}"
+                           value="{{ form.quantity.value }}" placeholder="Quantity"
+                           form="ingredient_edit_form">
+                    <div class="invalid-feedback">
+                        Please enter ingredient quantity.
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <label class="mr-sm-2" for="{{ form.unit.id }}">Unit *</label>
+                    <select required class="custom-select mr-sm-2" name="{{ form.unit.name }}" id="{{ form.unit.id }}"
+                            form="ingredient_edit_form">
+
+                        <option disabled value="">Choose ingredient unit...</option>
+                        {% if ingredient.unit == "gr" %}
+                        <option selected value="gr">gr</option>
+                        <option value="ml">ml</option>
+                        {% else %}
+                        <option value="gr">gr</option>
+                        <option selected value="ml">ml</option>
+                        {% endif %}
+
+                    </select>
+                    <div class="invalid-feedback">
+                        Please choose ingredient unit.
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="mb-4">
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit" form="ingredient_edit_form">Save changes
+            </button>
+            <!-- Button trigger modal -->
+            <button class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#exampleModalCenter">Delete
+                ingredient
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this ingredient?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, close</button>
+                <button type="submit" class="btn btn-primary" form="ingredient_delete_form">Yes, delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

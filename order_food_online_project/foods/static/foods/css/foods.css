@@ -1,14 +1,20 @@
-/* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
-  padding-top: 3.5rem;
+    padding-top: 3.5rem;
 }
 
 .jumbotron .container {
-  max-width: 40rem;
+    max-width: 40rem;
 }
 
 .container {
-  max-width: 960px;
+    max-width: 960px;
 }
 
-.lh-condensed { line-height: 1.25; }
+.lh-condensed {
+    line-height: 1.25;
+}
+
+
+.card .card-img-top {
+    height: 22rem;
+}
