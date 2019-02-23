@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'foods',
+    'notes',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authentication.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -138,3 +141,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 FIXTURE_DIRS = (
    os.path.join(BASE_DIR, 'fixtures'),
 )
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'

@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -52,7 +53,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Foods App</a>
+    <a class="navbar-brand" href="#">Foods</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -62,6 +63,46 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'index' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="authentication_dropdown" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i>
+                    {% if user.is_authenticated %}
+                    {{user.username}}
+                    {% else %}
+                    Auth
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="note_dropdown">
+                    <a class="dropdown-item" href="{% url 'register' %}"><i class="fa fa-user-plus"
+                                                                            aria-hidden="true"></i> Register</a>
+                    {% if not user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'login' %}"><i class="fa fa-sign-in"
+                                                                         aria-hidden="true"></i> Login</a>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out"
+                                                                          aria-hidden="true"></i> Logout</a>
+                    {% if request.user|has_group:"Customers" %}
+                    <a>yes </a>
+                    {% else %}
+                    <a>no</a>
+                    {% endif %}
+
+                    {% endif %}
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="note_dropdown" data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"><i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a>
+                <div class="dropdown-menu" aria-labelledby="note_dropdown">
+                    <a class="dropdown-item" href="{% url 'note_list' %}"><i class="fa fa-th-list"
+                                                                             aria-hidden="true"></i> List all</a>
+                    <a class="dropdown-item" href="{% url 'note_add' %}"><i class="fa fa-plus"
+                                                                            aria-hidden="true"></i> Add new</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="ingredient_dropdown" data-toggle="dropdown"

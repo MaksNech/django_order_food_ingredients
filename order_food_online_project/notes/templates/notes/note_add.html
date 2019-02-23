@@ -1,0 +1,51 @@
+{% extends "foods/base.html" %}
+{% block title %}Notes-Note-Add{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Note form</h2>
+        <p class="lead">Below is a form in which you can add a new note.</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-xs-12 col-centered">
+            <hr class="mb-4">
+            <h4 class="mb-3">Note details:</h4>
+            <p class="text-muted">Required Field *</p>
+
+            <form class="needs-validation" id="note_add_form" action="{% url 'note_add' %}"
+                  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="{{ form.title.id }}">Title *</label>
+                    <input required type="text" class="form-control" name="{{ form.title.name }}" id="{{ form.title.id }}"
+                           placeholder="Note Title"
+                           form="note_add_form">
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Note title is required.
+                    </div>
+                </div>
+
+               <div class="mb-3">
+                    <label for="{{ form.description.id }}">Description *</label>
+                    <textarea required class="form-control" name="{{ form.description.name }}"
+                              id="{{ form.description.id }}"
+                              rows="3" form="note_add_form"></textarea>
+                    <div class="invalid-feedback">
+                        Please enter note description.
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit" form="note_add_form">Add note
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
