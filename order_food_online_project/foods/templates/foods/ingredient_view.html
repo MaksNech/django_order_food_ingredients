@@ -19,7 +19,7 @@
                          width="460" height="345"><br>
                     {% endif %}
                     <h3 class="blog-post-title"> Ingredient info:</h3>
-                    <p class="blog-post-meta">{{ ingredient.created_on }} by <a href="#">Mark</a></p>
+                    <p class="blog-post-meta">{{ ingredient.created_on }} by <a href="#">{{ ingredient.author }}</a></p>
                     <hr>
                     <h3>Cost: {{ingredient.cost}} <span class="text-muted">(UAH)</span> per {{ingredient.quantity}}
                         {{ingredient.unit}}.</h3>

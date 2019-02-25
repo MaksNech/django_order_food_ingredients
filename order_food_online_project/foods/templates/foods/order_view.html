@@ -14,7 +14,8 @@
 
                 <div class="blog-post">
                     <h3 class="blog-post-title"> Order info:</h3>
-                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+                    <p class="blog-post-meta">Created: {{ order.created_on }} by <a href="#">{{ order.customer }}</a></p>
+                    <p class="blog-post-meta">Updated: {{ order.updated_on }}</p>
                     <hr>
                     <p>Customer: {{ order.customer }}</p>
                     <hr>

@@ -3,9 +3,18 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import Http404
 from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from .models import Dish, DishIngredients, Ingredient, OrderIngredients, Order, Section
 from .forms import DishAddForm, IngredientAddForm, OrderAddForm
+from .models import get_allowed_groups
+
+
+def permission_denied(request):
+    permission_codename = request.session.get('permission_codename')
+    data = get_allowed_groups(permission_codename)
+    return render(request, 'foods/permission_denied.html',
+                  context={'allowed_groups': data['allowed_groups'], 'permission': data['permission']})
 
 
 def index(request):
@@ -27,15 +36,22 @@ def ingredient_search(request):
 
 
 def ingredient_add(request):
-    if request.method == "POST":
-        form = IngredientAddForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('ingredient_list'))
+    if request.user.has_perm('foods.add_ingredient'):
 
-    form = IngredientAddForm()
+        if request.method == "POST":
+            form = IngredientAddForm(request.POST, request.FILES)
+            if form.is_valid():
+                ingredient = form.save(commit=False)
+                ingredient.author = request.user
+                ingredient.save()
+                return HttpResponseRedirect(reverse('ingredient_list'))
 
-    return render(request, 'foods/ingredient_add.html', context={'form': form})
+        form = IngredientAddForm()
+
+        return render(request, 'foods/ingredient_add.html', context={'form': form})
+    else:
+        request.session['permission_codename'] = 'add_ingredient'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def ingredient_view(request, ingredient_id):
@@ -45,28 +61,38 @@ def ingredient_view(request, ingredient_id):
 
 
 def ingredient_edit(request, ingredient_id):
-    ingredient = Ingredient.objects.get(id=ingredient_id)
-    if ingredient:
+    if request.user.has_perm('foods.change_ingredient'):
 
-        if request.method == "POST":
-            form = IngredientAddForm(request.POST, request.FILES, instance=ingredient)
-            if form.is_valid():
-                form.save()
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+        if ingredient:
 
-                return HttpResponseRedirect(reverse('ingredient_list'))
+            if request.method == "POST":
+                form = IngredientAddForm(request.POST, request.FILES, instance=ingredient)
+                if form.is_valid():
+                    form.save()
 
-        form = IngredientAddForm()
+                    return HttpResponseRedirect(reverse('ingredient_list'))
 
-        return render(request, 'foods/ingredient_edit.html', context={'ingredient': ingredient, 'form': form})
+            form = IngredientAddForm()
+
+            return render(request, 'foods/ingredient_edit.html', context={'ingredient': ingredient, 'form': form})
+    else:
+        request.session['permission_codename'] = 'change_ingredient'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def ingredient_delete(request, ingredient_id):
-    ingredient = Ingredient.objects.get(id=ingredient_id)
+    if request.user.has_perm('foods.delete_ingredient'):
 
-    if ingredient:
-        if request.method == "POST":
-            ingredient.delete()
-            return HttpResponseRedirect(reverse('ingredient_list'))
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+
+        if ingredient:
+            if request.method == "POST":
+                ingredient.delete()
+                return HttpResponseRedirect(reverse('ingredient_list'))
+    else:
+        request.session['permission_codename'] = 'delete_ingredient'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def dish_list(request):
@@ -82,28 +108,35 @@ def dish_search(request):
 
 
 def dish_add(request):
-    if request.method == "POST":
-        form = DishAddForm(request.POST, request.FILES)
-        if form.is_valid():
-            ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
-            new_dish = form.save()
+    if request.user.has_perm('foods.add_dish'):
 
-            for ingredient_id_quantity in ingredients_id_quantity_list:
-                data = ingredient_id_quantity.split('|')
-                ingredient_id = data[0]
-                ingredient_quantity = data[1]
-                added_ingred = Ingredient.objects.get(id=int(ingredient_id))
-                DishIngredients.objects.create(dish=new_dish, ingredient=added_ingred,
-                                               quantity=ingredient_quantity)
-            return HttpResponseRedirect(reverse('dish_list'))
+        if request.method == "POST":
+            form = DishAddForm(request.POST, request.FILES)
+            if form.is_valid():
+                ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
+                new_dish = form.save(commit=False)
+                new_dish.author = request.user
+                new_dish.save()
 
-    form = DishAddForm()
-    sections = Section.objects.all()
-    ingredients = Ingredient.objects.all()
-    dish_ingredients = DishIngredients.objects.all()
-    return render(request, 'foods/dish_add.html',
-                  context={'ingredients': ingredients, 'sections': sections, 'dish_ingredients': dish_ingredients,
-                           'form': form})
+                for ingredient_id_quantity in ingredients_id_quantity_list:
+                    data = ingredient_id_quantity.split('|')
+                    ingredient_id = data[0]
+                    ingredient_quantity = data[1]
+                    added_ingred = Ingredient.objects.get(id=int(ingredient_id))
+                    DishIngredients.objects.create(dish=new_dish, ingredient=added_ingred,
+                                                   quantity=ingredient_quantity)
+                return HttpResponseRedirect(reverse('dish_list'))
+
+        form = DishAddForm()
+        sections = Section.objects.all()
+        ingredients = Ingredient.objects.all()
+        dish_ingredients = DishIngredients.objects.all()
+        return render(request, 'foods/dish_add.html',
+                      context={'ingredients': ingredients, 'sections': sections, 'dish_ingredients': dish_ingredients,
+                               'form': form})
+    else:
+        request.session['permission_codename'] = 'add_dish'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def dish_view(request, dish_id):
@@ -121,104 +154,135 @@ def dish_view(request, dish_id):
 
 
 def dish_edit(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
+    if request.user.has_perm('foods.change_dish'):
 
-    if dish:
+        dish = Dish.objects.get(id=dish_id)
 
-        if request.method == "POST":
-            form = DishAddForm(request.POST, request.FILES, instance=dish)
-            if form.is_valid():
+        if dish:
 
-                edit_dish = form.save()
+            if request.method == "POST":
+                form = DishAddForm(request.POST, request.FILES, instance=dish)
+                if form.is_valid():
 
-                DishIngredients.objects.filter(dish__id=edit_dish.id).delete()
+                    edit_dish = form.save()
 
-                ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
+                    DishIngredients.objects.filter(dish__id=edit_dish.id).delete()
 
-                for ingredient_id_quantity in ingredients_id_quantity_list:
-                    data = ingredient_id_quantity.split('|')
-                    ingredient_id = data[0]
-                    ingredient_quantity = data[1]
-                    added_ingred = Ingredient.objects.get(id=int(ingredient_id))
-                    DishIngredients.objects.create(dish=edit_dish, ingredient=added_ingred,
-                                                   quantity=ingredient_quantity)
-                return HttpResponseRedirect(reverse('dish_list'))
+                    ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
 
-        form = DishAddForm()
-        sections = Section.objects.all()
-        ingredients = Ingredient.objects.all()
-        dish_ingredients = DishIngredients.objects.filter(dish=dish_id)
+                    for ingredient_id_quantity in ingredients_id_quantity_list:
+                        data = ingredient_id_quantity.split('|')
+                        ingredient_id = data[0]
+                        ingredient_quantity = data[1]
+                        added_ingred = Ingredient.objects.get(id=int(ingredient_id))
+                        DishIngredients.objects.create(dish=edit_dish, ingredient=added_ingred,
+                                                       quantity=ingredient_quantity)
+                    return HttpResponseRedirect(reverse('dish_list'))
 
-        return render(request, 'foods/dish_edit.html',
-                      context={'dish': dish, 'ingredients': ingredients, 'sections': sections,
-                               'dish_ingredients': dish_ingredients, 'form': form})
+            form = DishAddForm()
+            sections = Section.objects.all()
+            ingredients = Ingredient.objects.all()
+            dish_ingredients = DishIngredients.objects.filter(dish=dish_id)
+
+            return render(request, 'foods/dish_edit.html',
+                          context={'dish': dish, 'ingredients': ingredients, 'sections': sections,
+                                   'dish_ingredients': dish_ingredients, 'form': form})
+    else:
+        request.session['permission_codename'] = 'change_dish'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def dish_delete(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
+    if request.user.has_perm('foods.delete_dish'):
 
-    if dish:
-        if request.method == "POST":
-            dish.delete()
-            return HttpResponseRedirect(reverse('dish_list'))
+        dish = Dish.objects.get(id=dish_id)
+
+        if dish:
+            if request.method == "POST":
+                dish.delete()
+                return HttpResponseRedirect(reverse('dish_list'))
+    else:
+        request.session['permission_codename'] = 'delete_dish'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def order_list(request):
-    orders = Order.objects.all()
-    return render(request, 'foods/order_list.html', context={'orders': orders})
+    if request.user.has_perm('foods.view_order'):
+
+        orders = Order.objects.all()
+        return render(request, 'foods/order_list.html', context={'orders': orders})
+    else:
+        request.session['permission_codename'] = 'view_order'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def order_search(request):
-    query = request.GET['query']
-    if query:
-        orders = Order.objects.filter(Q(number__icontains=query) | Q(customer__icontains=query))
-        return render(request, 'foods/order_list.html', context={'orders': orders})
+    if request.user.has_perm('foods.view_order'):
+
+        query = request.GET['query']
+        if query:
+            orders = Order.objects.filter(Q(number__icontains=query) | Q(customer__icontains=query))
+            return render(request, 'foods/order_list.html', context={'orders': orders})
+    else:
+        request.session['permission_codename'] = 'view_order'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def order_add(request):
-    if request.method == "POST":
-        form = OrderAddForm(request.POST, request.FILES)
-        if form.is_valid():
+    if request.user.has_perm('foods.add_order'):
 
-            ordered_ingredients_list = request.POST.getlist("order_ingredient")
-            total_cost = 0
-            for ordered_ingredient in ordered_ingredients_list:
-                data = ordered_ingredient.split('|')
-                total_cost += Decimal(data[2])
+        if request.method == "POST":
+            form = OrderAddForm(request.POST, request.FILES)
+            if form.is_valid():
+                ordered_ingredients_list = request.POST.getlist("order_ingredient")
+                total_cost = 0
+                for ordered_ingredient in ordered_ingredients_list:
+                    data = ordered_ingredient.split('|')
+                    total_cost += Decimal(data[2])
 
-            form.cleaned_data['cost'] = total_cost
+                form.cleaned_data['cost'] = total_cost
 
-            new_order = form.save()
+                new_order = form.save(commit=False)
+                new_order.customer = request.user
+                new_order.save()
 
-            for ordered_ingredient in ordered_ingredients_list:
-                data = ordered_ingredient.split('|')
-                ingredient_id = data[0]
-                ingredient_quantity = data[1]
-                ingredient_cost = data[2]
-                added_ingred = Ingredient.objects.get(id=int(ingredient_id))
-                OrderIngredients.objects.create(order=new_order, ingredient=added_ingred,
-                                                quantity=ingredient_quantity, cost=ingredient_cost)
-            return HttpResponseRedirect(reverse('index'))
+                for ordered_ingredient in ordered_ingredients_list:
+                    data = ordered_ingredient.split('|')
+                    ingredient_id = data[0]
+                    ingredient_quantity = data[1]
+                    ingredient_cost = data[2]
+                    added_ingred = Ingredient.objects.get(id=int(ingredient_id))
+                    OrderIngredients.objects.create(order=new_order, ingredient=added_ingred,
+                                                    quantity=ingredient_quantity, cost=ingredient_cost)
+                return HttpResponseRedirect(reverse('index'))
 
-    form = OrderAddForm()
+        form = OrderAddForm()
 
-    ingredients = Ingredient.objects.all()
+        ingredients = Ingredient.objects.all()
 
-    return render(request, 'foods/order_add.html',
-                  context={'ingredients': ingredients, 'form': form})
+        return render(request, 'foods/order_add.html',
+                      context={'ingredients': ingredients, 'form': form})
+    else:
+        request.session['permission_codename'] = 'add_order'
+        return HttpResponseRedirect(reverse('permission_denied'))
 
 
 def order_view(request, order_id):
-    order = Order.objects.get(id=order_id)
+    if request.user.has_perm('foods.view_order'):
 
-    order_ingredients = OrderIngredients.objects.filter(order__id=order_id)
-    ingredients = []
-    if order_ingredients:
-        for order_ingredient in order_ingredients:
-            ingredient = Ingredient.objects.get(id=order_ingredient.ingredient.id)
-            ingredients.append({"id": ingredient.id, "name": ingredient.name, "cost": order_ingredient.cost,
-                                "quantity": order_ingredient.quantity,
-                                "unit": ingredient.unit})
+        order = Order.objects.get(id=order_id)
 
-    if order:
-        return render(request, 'foods/order_view.html', context={'order': order, 'ingredients': ingredients})
+        order_ingredients = OrderIngredients.objects.filter(order__id=order_id)
+        ingredients = []
+        if order_ingredients:
+            for order_ingredient in order_ingredients:
+                ingredient = Ingredient.objects.get(id=order_ingredient.ingredient.id)
+                ingredients.append({"id": ingredient.id, "name": ingredient.name, "cost": order_ingredient.cost,
+                                    "quantity": order_ingredient.quantity,
+                                    "unit": ingredient.unit})
+
+        if order:
+            return render(request, 'foods/order_view.html', context={'order': order, 'ingredients': ingredients})
+    else:
+        request.session['permission_codename'] = 'view_order'
+        return HttpResponseRedirect(reverse('permission_denied'))

@@ -24,6 +24,16 @@
                 <div class="alert alert-danger" role="alert">{{form.non_field_errors}}</div>
                 {% endif %}
                 <div class="md-3">
+                    <label for="register_user_group">What is your goal on the Foods-App? *</label>
+                    <select required class="custom-select mr-sm-2" name="register_user_group"
+                            id="register_user_group"
+                            form="register_form">
+                        <option selected disabled value="">Choose user goal...</option>
+                        <option value="authors">I am the author of dishes. I want to add new recipes.</option>
+                        <option value="customers">I am a buyer. I want to buy ingredients for the dish.</option>
+                    </select>
+                </div>
+                <div class="md-3">
                     <label for="register_phone">Phone *</label>
                     <input type="text" id="register_phone" name="{{ form.phone.name }}" placeholder="User Phone"
                            class="form-control input-medium bfh-phone" data-format="+38 (ddd) ddd-dddd" required>

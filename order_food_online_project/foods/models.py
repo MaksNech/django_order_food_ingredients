@@ -2,6 +2,15 @@ import uuid
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.contrib.auth.models import Group, Permission
+from django.conf import settings
+
+
+def get_allowed_groups(codename):
+    permission = Permission.objects.get(codename=codename)
+    allowed_groups = Group.objects.all().filter(permissions__codename=codename)
+    allowed_groups = [gr.name for gr in allowed_groups]
+    return {'allowed_groups': allowed_groups, 'permission': permission}
 
 
 class Section(models.Model):
@@ -21,6 +30,8 @@ class Ingredient(models.Model):
     quantity = models.DecimalField(max_digits=6, default=10, decimal_places=1, null=True)
     unit = models.CharField(max_length=20)
     cost = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                               related_name='users_ingredient_authors', blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -43,6 +54,8 @@ class Dish(models.Model):
     section = models.ForeignKey('Section', on_delete=models.CASCADE, related_name='dishes', null=True)
     ingredients = models.ManyToManyField('Ingredient', through='DishIngredients', through_fields=('dish', 'ingredient'),
                                          related_name='dishes')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users_dish_authors',
+                               blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -80,7 +93,6 @@ class Order(models.Model):
         (CANCELED, 'canceled'),
     )
     number = models.UUIDField(default=uuid.uuid1, editable=False)
-    customer = models.CharField(max_length=200, blank=True)
     ingredients = models.ManyToManyField('Ingredient', through='OrderIngredients',
                                          through_fields=('order', 'ingredient'), related_name='orders')
     cost = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -88,6 +100,8 @@ class Order(models.Model):
         choices=STATUS,
         default=UNFULFILLED,
     )
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users_customers',
+                                 blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 

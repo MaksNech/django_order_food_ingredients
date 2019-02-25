@@ -84,10 +84,14 @@
                     {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out"
                                                                           aria-hidden="true"></i> Logout</a>
-                    {% if request.user|has_group:"Customers" %}
-                    <a>yes </a>
-                    {% else %}
-                    <a>no</a>
+                    {% if request.user|has_group:"authors" %}
+                    <small class="dropdown-item disabled text-muted"><i class="fa fa-users" aria-hidden="true"></i> User
+                        group: authors
+                    </small>
+                    {% elif request.user|has_group:"customers" %}
+                    <small class="dropdown-item disabled text-muted"><i class="fa fa-users" aria-hidden="true"></i> User
+                        group: customers
+                    </small>
                     {% endif %}
 
                     {% endif %}

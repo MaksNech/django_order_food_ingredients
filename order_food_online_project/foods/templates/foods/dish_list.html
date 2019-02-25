@@ -42,8 +42,13 @@
                                    role="button" aria-pressed="true"><i class="fa fa-pencil" aria-hidden="true"></i>
                                     Edit</a>
                             </div>
-                            <small class="text-muted">{{ dish.created_on }}</small>
                         </div>
+                        <hr>
+                        <p>
+                            <small class="text-muted">Author: {{ dish.author }}</small>
+                            <br>
+                            <small class="text-muted">Created: {{ dish.created_on }}</small>
+                        </p>
                     </div>
                 </div>
             </div>

@@ -80,7 +80,10 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 #### Inside the project directory set the initial data with fixtures:
+#### Attention! Be sure to run the commands in the order shown.
 ```bash
+python manage.py loaddata groups.json
+
 python manage.py loaddata sections.json
 
 python manage.py loaddata ingredients.json
