@@ -19,4 +19,4 @@ class DishAddForm(ModelForm):
 class OrderAddForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['customer', 'cost']
+        fields = ['cost']

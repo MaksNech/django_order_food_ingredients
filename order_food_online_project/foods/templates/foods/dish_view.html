@@ -18,7 +18,7 @@
                          width="460" height="345"><br>
                     {% endif %}
                     <h3 class="blog-post-title"> Dish info:</h3>
-                    <p class="blog-post-meta">{{ dish.created_on }} by <a href="#">Mark</a></p>
+                    <p class="blog-post-meta">{{ dish.created_on }} by <a href="#">{{ dish.author }}</a></p>
                     <hr>
                     <p>{{ dish.description }}</p>
                     {% if ingredients %}

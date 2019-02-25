@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('permission/denied/', views.permission_denied, name='permission_denied'),
     path('ingredient/', views.ingredient_list, name='ingredient_list'),
     path('ingredient/search/', views.ingredient_search, name='ingredient_search'),
     path('ingredient/add/', views.ingredient_add, name='ingredient_add'),

@@ -1,0 +1,28 @@
+{% extends "foods/base.html" %}
+{% block title %}Foods-Permission-Denied{% endblock %}
+{% block content %}
+
+<div class="container">
+
+     <div class="py-5 text-center">
+        <h2>ERROR 403</h2>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-xs-12 col-centered">
+
+            <hr class="mb-4">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Permission denied!</h4>
+                <p>Sorry, but you are not authorized to perform "{{permission.name}}" action. This action is allowed for a
+                    {{allowed_groups}} groups of users.</p>
+                <hr>
+                <p class="mb-0">For more information, you can contact the administrator of the application.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

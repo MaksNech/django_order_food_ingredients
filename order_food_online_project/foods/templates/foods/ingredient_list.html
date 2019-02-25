@@ -40,8 +40,13 @@
                                    class="btn btn-sm btn-outline-secondary" role="button" aria-pressed="true"><i
                                         class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                             </div>
-                            <small class="text-muted">{{ ingredient.created_on }}</small>
                         </div>
+                        <hr>
+                        <p>
+                            <small class="text-muted">Author: {{ ingredient.author }}</small>
+                            <br>
+                            <small class="text-muted">Created: {{ ingredient.created_on }}</small>
+                        </p>
                     </div>
                 </div>
             </div>

@@ -22,13 +22,13 @@
 
                 <div class="row align-items-end">
                     <div class="col-md-6 mb-4">
-                        <label for="{{ form.customer.id }}">Name *</label>
-                        <input required type="text" class="form-control" name="{{ form.customer.name }}"
-                               id="{{ form.customer.id }}"
-                               placeholder="Customer Name"
+                        <label for="customer_full_name">Full Name *</label>
+                        <input required type="text" class="form-control" name="customer_full_name"
+                               id="customer_full_name"
+                               placeholder="Customer Full Name"
                                form="order_add_form">
                         <div class="invalid-feedback" style="width: 100%;">
-                            Customer name is required.
+                            Customer full name is required.
                         </div>
                     </div>
                     <div class="col-md-6 mb-4">
@@ -37,7 +37,7 @@
                                class="form-control input-medium bfh-phone" data-format="+38 (ddd) ddd-dddd"
                                form="order_add_form">
                         <div class="invalid-feedback" style="width: 100%;">
-                            Customer name is required.
+                            Customer phone is required.
                         </div>
                     </div>
                 </div>
