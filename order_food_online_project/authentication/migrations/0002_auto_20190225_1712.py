@@ -45,14 +45,15 @@ def set_permissions_to_groups(apps, schema_editor):
     Permission = apps.get_model('auth', 'Permission')
 
     authors_group, authors_group_created = Group.objects.get_or_create(name='authors')
-    if authors_group or authors_group_created:
+    if authors_group:
 
         for codename in authors_permission_codenames:
             permission = Permission.objects.get(codename=codename)
             authors_group.permissions.add(permission)
 
+    
     customers_group, customers_group_created = Group.objects.get_or_create(name='customers')
-    if customers_group or customers_group_created:
+    if customers_group:
 
         for codename in customers_permission_codenames:
             permission = Permission.objects.get(codename=codename)
