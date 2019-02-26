@@ -113,18 +113,23 @@ def dish_add(request):
         if request.method == "POST":
             form = DishAddForm(request.POST, request.FILES)
             if form.is_valid():
-                ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
+
                 new_dish = form.save(commit=False)
                 new_dish.author = request.user
+
+                ingredients_obj = []
+                ingredients_id = request.POST.getlist("dish_ingredient_added")
+                quantity = request.POST.getlist("dish_ingredient_quantity_added")
+                for ingredient_id in ingredients_id:
+                    ingredient_obj = Ingredient.objects.get(id=int(ingredient_id))
+                    ingredients_obj.append(ingredient_obj)
+
+                data = dict(zip(ingredients_obj, quantity))
                 new_dish.save()
 
-                for ingredient_id_quantity in ingredients_id_quantity_list:
-                    data = ingredient_id_quantity.split('|')
-                    ingredient_id = data[0]
-                    ingredient_quantity = data[1]
-                    added_ingred = Ingredient.objects.get(id=int(ingredient_id))
-                    DishIngredients.objects.create(dish=new_dish, ingredient=added_ingred,
-                                                   quantity=ingredient_quantity)
+                for key, val in data.items():
+                    DishIngredients.objects.create(dish=new_dish, ingredient=key, quantity=val)
+
                 return HttpResponseRedirect(reverse('dish_list'))
 
         form = DishAddForm()
@@ -168,15 +173,17 @@ def dish_edit(request, dish_id):
 
                     DishIngredients.objects.filter(dish__id=edit_dish.id).delete()
 
-                    ingredients_id_quantity_list = request.POST.getlist("dish_ingredient")
+                    ingredients_obj = []
+                    ingredients_id = request.POST.getlist("dish_ingredient_added")
+                    quantity = request.POST.getlist("dish_ingredient_quantity_added")
+                    for ingredient_id in ingredients_id:
+                        ingredient_obj = Ingredient.objects.get(id=int(ingredient_id))
+                        ingredients_obj.append(ingredient_obj)
 
-                    for ingredient_id_quantity in ingredients_id_quantity_list:
-                        data = ingredient_id_quantity.split('|')
-                        ingredient_id = data[0]
-                        ingredient_quantity = data[1]
-                        added_ingred = Ingredient.objects.get(id=int(ingredient_id))
-                        DishIngredients.objects.create(dish=edit_dish, ingredient=added_ingred,
-                                                       quantity=ingredient_quantity)
+                    data = dict(zip(ingredients_obj, quantity))
+
+                    for key, val in data.items():
+                        DishIngredients.objects.create(dish=edit_dish, ingredient=key, quantity=val)
                     return HttpResponseRedirect(reverse('dish_list'))
 
             form = DishAddForm()
