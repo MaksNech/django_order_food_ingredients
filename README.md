@@ -109,29 +109,7 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
-## 2: Running Celery Locally:
-#### Install Redis as a Celery “Broker” in your system, not in virtualenv:
-```bash
-wget http://download.redis.io/redis-stable.tar.gz
 
-tar xvzf redis-stable.tar.gz
-
-cd redis-stable
-
-make
-```
-#### Check installation:
-```bash
-redis-server
-```
-##### With your Django App and Redis running, open two new terminal windows/tabs. 
-##### In each new window, navigate to your project directory where "order_food_online" folder,
-##### activate your virtualenv, and then run the following commands (one in each window):
-```bash
-celery -A order_food_online worker -l info
-
-celery -A order_food_online beat -l info
-```
 ## 4: Celery:
 ### Running Locally:
 #### Install Redis as a Celery “Broker” in your system, not in virtualenv:
