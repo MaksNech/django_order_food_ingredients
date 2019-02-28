@@ -87,10 +87,14 @@ class Order(models.Model):
     UNFULFILLED = 100
     FULFILLED = 200
     CANCELED = 300
+    CLOSED = 400
+    EXPIRED = 500
     STATUS = (
         (UNFULFILLED, 'unfulfilled'),
         (FULFILLED, 'fulfilled'),
         (CANCELED, 'canceled'),
+        (CLOSED, 'closed'),
+        (EXPIRED, 'expired'),
     )
     number = models.UUIDField(default=uuid.uuid1, editable=False)
     ingredients = models.ManyToManyField('Ingredient', through='OrderIngredients',
