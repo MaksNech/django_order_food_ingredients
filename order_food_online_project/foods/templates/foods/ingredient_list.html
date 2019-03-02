@@ -1,18 +1,19 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Ingredient{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Ingredient" %}{% endblock %}
 {% block search %}
+{% trans "Search" as search %}
 <form class="form-inline my-2 my-lg-0" action="{% url 'ingredient_search' %}" method="GET">
-    <input required class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+    <input required class="form-control mr-sm-2" type="text" placeholder={{search}} aria-label={{search}}
            name="query" value="{{ query }}">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{search}}</button>
 </form>
 {% endblock %}
 {% block content %}
-
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="text-center">
-            <h2>Ingredients</h2>
+            <h2>{% trans "Ingredients" %}</h2>
         </div>
 
         <div class="row">
@@ -35,17 +36,17 @@
                             <div class="btn-group">
                                 <a href="{% url 'ingredient_view' ingredient.id %}"
                                    class="btn btn-sm btn-outline-secondary" role="button" aria-pressed="true"><i
-                                        class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                        class="fa fa-eye" aria-hidden="true"></i>{% trans " View" %}</a>
                                 <a href="{% url 'ingredient_edit' ingredient.id %}"
                                    class="btn btn-sm btn-outline-secondary" role="button" aria-pressed="true"><i
-                                        class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                                        class="fa fa-pencil" aria-hidden="true"></i>{% trans " Edit" %}</a>
                             </div>
                         </div>
                         <hr>
                         <p>
-                            <small class="text-muted">Author: {{ ingredient.author }}</small>
+                            <small class="text-muted">{% trans "Author:" %} {{ ingredient.author }}</small>
                             <br>
-                            <small class="text-muted">Created: {{ ingredient.created_on }}</small>
+                            <small class="text-muted">{% trans "Created:" %} {{ ingredient.created_on }}</small>
                         </p>
                     </div>
                 </div>
@@ -53,7 +54,7 @@
 
             {% endfor %}
             {% else %}
-            <p>No ingredients match your search criteria.</p>
+            <p>{% trans "No ingredients match your search criteria." %}</p>
             {% endif %}
         </div>
     </div>

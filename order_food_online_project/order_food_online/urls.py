@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', lambda request: redirect('foods/', permanent=True)),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path('foods/', include('foods.urls')),
     path('notes/', include('notes.urls')),

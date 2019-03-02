@@ -1,12 +1,13 @@
 {% extends "foods/base.html" %}
-{% block title %}Authentication-Register{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Authentication-Register" %}{% endblock %}
 {% block content %}
 
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2>User register form</h2>
-        <p class="lead">Below is a form in which you can register a new user.</p>
+        <h2>{% trans "User register form" %}</h2>
+        <p class="lead">{% trans "Below is a form in which you can register a new user." %}</p>
     </div>
 
     <div class="row justify-content-center">
@@ -14,7 +15,7 @@
         <div class="col-md-6 col-xs-12 col-centered">
 
             <hr class="mb-4">
-            <p class="text-muted">Required Field *</p>
+            <p class="text-muted">{% trans "Required Field *" %}</p>
 
             <form class="needs-validation" id="register_form" action="{% url 'register' %}"
                   method="post" enctype="multipart/form-data">
@@ -24,48 +25,58 @@
                 <div class="alert alert-danger" role="alert">{{form.non_field_errors}}</div>
                 {% endif %}
                 <div class="md-3">
-                    <label for="register_user_group">What is your goal on the Foods-App? *</label>
+                    <label for="register_user_group">{% trans "What is your goal on the Foods-App? *" %}</label>
                     <select required class="custom-select mr-sm-2" name="register_user_group"
                             id="register_user_group"
                             form="register_form">
-                        <option selected disabled value="">Choose user goal...</option>
-                        <option value="authors">I am the author of dishes. I want to add new recipes.</option>
-                        <option value="customers">I am a buyer. I want to buy ingredients for the dish.</option>
+                        <option selected disabled value="">{% trans "Choose user goal..." %}</option>
+                        <option value="authors">
+                            {% trans "I am the author of dishes. I want to add new recipes." %}
+                        </option>
+                        <option value="customers">
+                            {% trans "I am a buyer. I want to buy ingredients for the dish." %}
+                        </option>
                     </select>
                 </div>
                 <div class="md-3">
-                    <label for="register_phone">Phone *</label>
-                    <input type="text" id="register_phone" name="{{ form.phone.name }}" placeholder="User Phone"
+                    {% trans "Phone" as phone %}
+                    <label for="register_phone">{% trans "User Phone *" %}</label>
+                    <input type="text" id="register_phone" name="{{ form.phone.name }}"
+                           placeholder={{phone}}
                            class="form-control input-medium bfh-phone" data-format="+38 (ddd) ddd-dddd" required>
                 </div>
                 {% if form.username.errors %}
                 <div class="alert alert-danger" role="alert">{{form.username.errors}}</div>
                 {% endif %}
                 <div class="mb-3">
-                    <label for="register_name">User Name *</label>
+                    {% trans "Name" as name %}
+                    <label for="register_name">{% trans "User Name *" %}</label>
                     <input type="text" id="register_name" name="{{ form.username.name }}" class="form-control"
-                           placeholder="User name" required>
+                           placeholder={{name}} required>
                 </div>
                 {% if form.password1.errors %}
                 <div class="alert alert-danger" role="alert">{{form.password1.errors}}</div>
                 {% endif %}
                 <div class="mb-3">
-                    <label for="register_password">User Password *</label>
+                    {% trans "Password" as password %}
+                    <label for="register_password">{% trans "User Password *" %}</label>
                     <input type="password" id="register_password" name="{{ form.password1.name }}" class="form-control"
-                           placeholder="User Password" required>
+                           placeholder={{password}} required>
                 </div>
                 {% if form.password2.errors %}
                 <div class="alert alert-danger" role="alert">{{form.password2.errors}}</div>
                 {% endif %}
                 <div class="mb-3">
-                    <label for="confirm_register_password">Confirm User Password *</label>
+                    {% trans "Confirm" as confirm %}
+                    <label for="confirm_register_password">{% trans "Confirm User Password *" %}</label>
                     <input type="password" id="confirm_register_password" name="{{ form.password2.name }}"
                            class="form-control"
-                           placeholder="Confirm User Password" required>
+                           placeholder={{confirm}} required>
                 </div>
                 <hr class="mb-4">
 
-                <button class="btn btn-primary btn-lg btn-block" type="submit" form="register_form">Register user
+                <button class="btn btn-primary btn-lg btn-block" type="submit" form="register_form">
+                    {% trans "Register user" %}
                 </button>
             </form>
         </div>

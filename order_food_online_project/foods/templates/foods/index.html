@@ -1,19 +1,19 @@
 {% extends "foods/base.html" %}
-
-{% block title %}Foods-Home{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Home" %}{% endblock %}
 
 {% block jumbotron %}
 <div class="jumbotron">
 
-    <h1 class="display-3">Welcome to Foods App!</h1>
-    <p>Here you can select and order ingredients.</p>
+    <h1 class="display-4">{% trans "Welcome to Foods App!" %}</h1>
+    <p class="h2">{% trans "Here you can select and order ingredients." %}</p>
 
 </div>
 {% endblock %}
-
 {% block carousel %}
 {% if dishes.8.name %}
-
+<div class="album py-5 bg-dark">
+<div class="container">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -36,7 +36,7 @@
                                 <p class="card-text">{{ dishes.0.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -46,7 +46,7 @@
                                 <p class="card-text">{{ dishes.1.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -56,7 +56,7 @@
                                 <p class="card-text">{{ dishes.2.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                                 <p class="card-text">{{ dishes.3.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -92,7 +92,7 @@
                                 <p class="card-text">{{ dishes.4.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -102,7 +102,7 @@
                                 <p class="card-text">{{ dishes.5.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                                 <p class="card-text">{{ dishes.6.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -138,7 +138,7 @@
                                 <p class="card-text">{{ dishes.7.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                         <div class="card text-white bg-secondary border-light">
@@ -148,7 +148,7 @@
                                 <p class="card-text">{{ dishes.8.description }}</p>
                             </div>
                             <div class="card-footer text-white bg-dark">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">{% trans "Last updated" %}</small>
                             </div>
                         </div>
                     </div>
@@ -161,13 +161,15 @@
         <!--/.Third slide-->
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{% trans "Previous" %}</span>
         </a>
         <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{% trans "Next" %}</span>
         </a>
     </div>
+</div>
+</div>
 </div>
 {% endif %}
 {% endblock %}
