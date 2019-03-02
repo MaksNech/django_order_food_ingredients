@@ -1,11 +1,12 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Permission-Denied{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Permission-Denied" %}{% endblock %}
 {% block content %}
 
 <div class="container">
 
      <div class="py-5 text-center">
-        <h2>ERROR 403</h2>
+        <h2>{% trans "ERROR 403" %}</h2>
     </div>
 
     <div class="row justify-content-center">
@@ -14,11 +15,13 @@
 
             <hr class="mb-4">
             <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Permission denied!</h4>
-                <p>Sorry, but you are not authorized to perform "{{permission.name}}" action. This action is allowed for a
-                    {{allowed_groups}} groups of users.</p>
+                <h4 class="alert-heading">{% trans "Permission denied!" %}</h4>
+                <p>{% trans "Sorry, but you are not authorized to perform " %}"{{permission.name}}"{% trans " action." %}
+                    {% trans "This action is allowed for a " %}{{allowed_groups}}{% trans " groups of users." %}</p>
                 <hr>
-                <p class="mb-0">For more information, you can contact the administrator of the application.</p>
+                <p class="mb-0">
+                    {% trans "For more information, you can contact the administrator of the application." %}
+                </p>
             </div>
 
         </div>

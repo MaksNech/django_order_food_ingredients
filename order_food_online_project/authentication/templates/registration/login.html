@@ -1,45 +1,44 @@
 {% extends "foods/base.html" %}
-{% block title %}Authentication-Login{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Authentication-Login" %}{% endblock %}
 {% block content %}
 
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2>Login form</h2>
+        <h2>{% trans "Login form" %}</h2>
     </div>
 
     <div class="row justify-content-center">
 
         <div class="col-md-6 col-xs-12">
 
-            {% if next %}
-            <p>You can't access that page.</p>
-            {% endif %}
-
             <form class="form-signin" id="login_form" action="{% url 'login' %}"
                   method="post">
                 {% csrf_token %}
 
-                <h1 class="h3 mb-3 font-weight-normal">Please to login:</h1>
+                <h1 class="h3 mb-3 font-weight-normal">{% trans "Please to login:" %}</h1>
 
                 {% if form.non_field_errors %}
                 <div class="alert alert-danger" role="alert">{{form.non_field_errors}}</div>
                 {% endif %}
 
-                <label for="login_name">User Name</label>
+                <label for="login_name">{% trans "User Name" %}</label>
+                {% trans "Name" as name %}
                 <input type="text" id="login_name" name="{{ form.username.name }}" class="form-control"
-                       placeholder="User name" required>
+                       placeholder={{name}} required>
 
-                <label for="login_password">User Password</label>
+                <label for="login_password">{% trans "User Password" %}</label>
+                {% trans "Password" as password %}
                 <input type="password" id="login_password" name="{{ form.password.name }}" class="form-control"
-                       placeholder="User Password" required>
+                       placeholder={{password}} required>
                 <div class="checkbox mb-3">
                     <label>
-                        <input type="checkbox" value="remember-me"> Remember me
+                        <input type="checkbox" value="remember-me"> {% trans "Remember me" %}
                     </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" form="login_form">
-                    Login
+                    {% trans "Login" %}
                 </button>
                 <input type="hidden" name="next" value="{{ next }}">
             </form>

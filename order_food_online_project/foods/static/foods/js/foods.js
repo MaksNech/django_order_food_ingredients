@@ -63,7 +63,13 @@ function addAddedIngredientDish() {
 };
 
 
-function addIngredientDish(addedIngredient=false, ingredientId=false, ingredientQuantity=false, ingredientName=false, ingredientUnit=false) {
+function addIngredientDish(addedIngredient, ingredientId, ingredientQuantity, ingredientName, ingredientUnit) {
+
+    addedIngredient = addedIngredient || false;
+    ingredientId = ingredientId || null;
+    ingredientQuantity = ingredientQuantity || null;
+    ingredientName = ingredientName || null;
+    ingredientUnit = ingredientUnit || null;
 
     if (addedIngredient == false) {
         var ingredientId = $('#dish_ingredient option:selected').val();
@@ -189,7 +195,14 @@ function addAddedIngredientOrder() {
 };
 
 
-function addIngredientOrder(addedIngredient=false, ingredientId=null, ingredientQuantity=null, ingredientName=null, ingredientUnit=null, ingredientCost=null) {
+function addIngredientOrder(addedIngredient, ingredientId, ingredientQuantity, ingredientName, ingredientUnit, ingredientCost) {
+
+    addedIngredient = addedIngredient || false;
+    ingredientId = ingredientId || null;
+    ingredientQuantity = ingredientQuantity || null;
+    ingredientName = ingredientName || null;
+    ingredientUnit = ingredientUnit || null;
+    ingredientCost = ingredientCost || null;
 
     if (addedIngredient == false) {
         var ingredientId = $('#order_ingredient option:selected').val();

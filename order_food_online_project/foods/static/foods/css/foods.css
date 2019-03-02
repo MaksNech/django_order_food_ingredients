@@ -16,5 +16,11 @@ body {
 
 
 .card .card-img-top {
-    height: 22rem;
+    height: 25rem;
 }
+
+.navbar-brand .img-fluid {
+    max-width:100px;
+    height: auto;
+}
+

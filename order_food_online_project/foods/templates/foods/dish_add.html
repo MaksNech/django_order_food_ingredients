@@ -1,111 +1,99 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Dish-Add{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Dish-Add" %}{% endblock %}
 {% block content %}
 
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2>Dish form</h2>
-        <p class="lead">Below is a form in which you can add a new dish.</p>
+        <h2>{% trans "Dish form" %}</h2>
+        <p class="lead">{% trans "Below is a form in which you can add a new dish." %}</p>
     </div>
 
     <div class="row">
 
         <div class="col-md-12 col-xs-12 col-centered">
             <hr class="mb-4">
-            <h4 class="mb-3">Dish details:</h4>
-            <p class="text-muted">Required Field *</p>
+            <h4 class="mb-3">{% trans "Dish details:" %}</h4>
+            <p class="text-muted">{% trans "Required Field *" %}</p>
 
             <form class="needs-validation" id="dish_add_form" action="{% url 'dish_add' %}"
                   method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="mb-3">
-                    <label for="{{ form.name.id }}">Name *</label>
+                    {% trans "Name" as name %}
+                    <label for="{{ form.name.id }}">{% trans "Dish Name *" %}</label>
                     <input required type="text" class="form-control" name="{{ form.name.name }}" id="{{ form.name.id }}"
-                           placeholder="Dish Name"
+                           placeholder={{name}}
                            form="dish_add_form">
-                    <div class="invalid-feedback" style="width: 100%;">
-                        Dish name is required.
-                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="{{ form.img.id }}">Image *</label>
+                    <label for="{{ form.img.id }}">{% trans "Dish Image *" %}</label>
                     <div class="custom-file">
                         <input required type="file" accept="image/*" class="custom-file-input"
                                name="{{ form.img.name }}"
                                id="{{ form.img.id }}" form="dish_add_form">
-                        <label class="custom-file-label" for="{{ form.img.id }}">Choose Image</label>
-                    </div>
-                    <div class="invalid-feedback">
-                        Please enter a valid image path.
+                        <label class="custom-file-label" for="{{ form.img.id }}">{% trans "Choose Image" %}</label>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="{{ form.description.id }}">Description *</label>
+                    <label for="{{ form.description.id }}">{% trans "Dish Description *" %}</label>
                     <textarea required class="form-control" name="{{ form.description.name }}"
                               id="{{ form.description.id }}"
                               rows="3" form="dish_add_form"></textarea>
-                    <div class="invalid-feedback">
-                        Please enter dish description.
-                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="mr-sm-2" for="{{ form.section.id }}">Section *</label>
+                    <label class="mr-sm-2" for="{{ form.section.id }}">{% trans "Section *" %}</label>
                     <select required class="custom-select mr-sm-2" name="{{ form.section.name }}"
                             id="{{ form.section.id }}"
                             form="dish_add_form">
-                        <option selected disabled value="">Choose dish section...</option>
+                        <option selected disabled value="">{% trans "Choose dish section..." %}</option>
                         {% if sections %}
                         {% for section in sections %}
                         <option value="{{ section.id }}">{{ section.name }}</option>
                         {% endfor %}
                         {% endif %}
                     </select>
-                    <div class="invalid-feedback">
-                        Please choose dish section.
-                    </div>
                 </div>
 
                 <hr class="mb-4">
-                <h4 class="mb-3">Ingredients details:</h4>
+                <h4 class="mb-3">{% trans "Ingredients details:" %}</h4>
 
                 <div class="row align-items-end" id="dish_ingredient_add_div">
                     <div class="col-md-4 mb-4">
-                        <label for="dish_ingredient">Ingredient | Unit <span
-                                class="text-muted">(Optional)</span></label>
+                        <label for="dish_ingredient">{% trans "Ingredient | Unit " %}<span
+                                class="text-muted">{% trans "(Optional)" %}</span></label>
                         <select class="custom-select d-block w-100" name="dish_ingredient" id="dish_ingredient"
                                 form="dish_add_form">
-                            <option selected disabled value="">Choose dish ingredient...</option>
+                            <option selected disabled value="">{% trans "Choose dish ingredient..." %}</option>
                             {% if ingredients %}
                             {% for ingredient in ingredients %}
                             <option value="{{ ingredient.id }}">{{ ingredient.name }} | {{ ingredient.unit }}</option>
                             {% endfor %}
                             {% endif %}
                         </select>
-                        <div class="invalid-feedback">
-                            Please choose dish ingredients.
-                        </div>
                     </div>
                     <div class="col-md-4 mb-4">
-                        <label for="dish_ingredient_quantity">Quantity <span
-                                class="text-muted">(Optional)</span></label>
+                        {% trans "Quantity" as quantity %}
+                        <label for="dish_ingredient_quantity">{% trans "Quantity " %}<span
+                                class="text-muted">{% trans "(Optional)" %}</span></label>
                         <input type="number" min="10" max="9999" class="form-control"
-                               id="dish_ingredient_quantity" value="" name="dish_ingredient_quantity" placeholder="Quantity"
+                               id="dish_ingredient_quantity" value="" name="dish_ingredient_quantity"
+                               placeholder={{quantity}}
                                form="dish_add_form">
-                        <div class="invalid-feedback">
-                            Please enter ingredient quantity.
-                        </div>
                     </div>
-                    <input type="hidden" id="dish_ingredient_add_hidden" name="dish_ingredient_add_hidden" form="dish_add_form">
+                    <input type="hidden" id="dish_ingredient_add_hidden" name="dish_ingredient_add_hidden"
+                           form="dish_add_form">
                 </div>
 
                 <div class="mb-3">
                      <div class="d-flex justify-content-center">
-                        <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add ingredient
+                        <button type="submit" id="dish_ingredient_submit_btn" class="btn btn-primary">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>{% trans " Add ingredient" %}
                         </button>
                     </div>
                 </div>
@@ -116,7 +104,8 @@
 
                 <hr class="mb-4">
 
-                <button id="add_dish_btn" class="btn btn-primary btn-lg btn-block" type="submit" form="dish_add_form">Add dish</button>
+                <button id="add_dish_btn" class="btn btn-primary btn-lg btn-block" type="submit" form="dish_add_form">
+                    {% trans "Add dish" %}</button>
             </form>
         </div>
     </div>

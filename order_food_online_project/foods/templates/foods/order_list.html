@@ -1,10 +1,12 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Order{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Order" %}{% endblock %}
 {% block search %}
+{% trans "Search" as search %}
 <form class="form-inline my-2 my-lg-0" action="{% url 'order_search' %}" method="GET">
-    <input required class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+    <input required class="form-control mr-sm-2" type="text" placeholder={{search}} aria-label={{search}}
            name="query" value="{{ query }}">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{search}}</button>
 </form>
 {% endblock %}
 {% block content %}
@@ -12,7 +14,7 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="text-center">
-            <h2>Orders</h2>
+            <h2>{% trans "Orders" %}</h2>
         </div>
 
         <div class="row align-items-end">
@@ -23,15 +25,16 @@
                     {% for order in orders %}
                     <a href="{% url 'order_view' order.id %}" id="{{order.number}}_order_view"
                        class='list-group-item list-group-item-action list-group-item-primary d-flex
-                       justify-content-around align-items-center'><span class="text-muted">Customer: </span>
-                        {{order.customer}}<span class="text-muted">Number: </span>{{order.number}}
-                        <span class="text-muted">Status: </span>
+                       justify-content-around align-items-center'>
+                        <span class="text-muted">{% trans "Customer:" %} </span>
+                        {{order.customer}}<span class="text-muted">{% trans "Number:" %} </span>{{order.number}}
+                        <span class="text-muted">{% trans "Status:" %} </span>
                         <span class='badge badge-primary badge-pill'>{{order.status}}</span></a>
                     {% endfor %}
 
                 </div>
                 {% else %}
-                <p>No orders match your search criteria.</p>
+                <p>{% trans "No orders match your search criteria." %}</p>
                 {% endif %}
             </div>
         </div>

@@ -115,7 +115,7 @@ class Order(models.Model):
                                                                                        self.updated_on, self.cost)
 
     class Meta:
-        ordering = ['created_on']
+        ordering = ['-created_on']
 
 
 class OrderIngredients(models.Model):

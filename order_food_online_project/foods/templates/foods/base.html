@@ -1,5 +1,6 @@
 {% load static %}
 {% load custom_tags %}
+{% load i18n %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,21 +12,13 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Jquery core -->
-    <!--<script src="https://code.jquery.com/jquery-3.3.1.js"-->
-    <!--integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>-->
     <script src="{% static 'foods/js/jquery-3.3.1.js' %}"></script>
 
     <!-- Bootstrap core  -->
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
-    <!--integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
     <link href="{% static 'foods/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"-->
-    <!--integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"-->
-    <!--crossorigin="anonymous"></script>-->
+
     <script src="{% static 'foods/bootstrap/js/popper.min.js' %}"></script>
-    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"-->
-    <!--integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"-->
-    <!--crossorigin="anonymous"></script>-->
+
     <script src="{% static 'foods/bootstrap/js/bootstrap.min.js' %}"></script>
 
     <!-- Font-awesome styles  -->
@@ -53,7 +46,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Foods</a>
+    <a class="navbar-brand" href="#">
+     <img class="img-fluid rounded float-left"  src="{% static 'foods/img/logo.png' %}" alt="">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -61,8 +56,29 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <form class="form-inline m-3 my-lg-0" action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+
+                    <select class="custom-select mr-sm-2" id="locale_select" name="language"
+                            onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        <option value="{{ language.code }}"
+                                {% if language.code == LANGUAGE_CODE %}
+                                selected="selected"
+                                {% endif %}>
+                            {{ language.code }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                <a class="nav-link" href="{% url 'index' %}">
+                    <i class="fa fa-home" aria-hidden="true"></i> {% trans "Home" %}</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="authentication_dropdown" data-toggle="dropdown"
@@ -71,26 +87,26 @@
                     {% if user.is_authenticated %}
                     {{user.username}}
                     {% else %}
-                    Auth
+                    {% trans "Auth" %}
                     {% endif %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="note_dropdown">
-                    <a class="dropdown-item" href="{% url 'register' %}"><i class="fa fa-user-plus"
-                                                                            aria-hidden="true"></i> Register</a>
+                    <a class="dropdown-item" href="{% url 'register' %}">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i> {% trans "Register" %}</a>
                     {% if not user.is_authenticated %}
-                    <a class="dropdown-item" href="{% url 'login' %}"><i class="fa fa-sign-in"
-                                                                         aria-hidden="true"></i> Login</a>
+                    <a class="dropdown-item" href="{% url 'login' %}">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> {% trans "Login" %}</a>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out"
-                                                                          aria-hidden="true"></i> Logout</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> {% trans "Logout" %}</a>
                     {% if request.user|has_group:"authors" %}
-                    <small class="dropdown-item disabled text-muted"><i class="fa fa-users" aria-hidden="true"></i> User
-                        group: authors
+                    <small class="dropdown-item disabled text-muted">
+                        <i class="fa fa-users" aria-hidden="true"></i> {% trans "User group: authors" %}
                     </small>
                     {% elif request.user|has_group:"customers" %}
-                    <small class="dropdown-item disabled text-muted"><i class="fa fa-users" aria-hidden="true"></i> User
-                        group: customers
+                    <small class="dropdown-item disabled text-muted">
+                        <i class="fa fa-users" aria-hidden="true"></i> {% trans "User group: customers" %}
                     </small>
                     {% endif %}
 
@@ -100,46 +116,46 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="note_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false"><i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a>
+                   aria-expanded="false"><i class="fa fa-sticky-note" aria-hidden="true"></i> {% trans "Notes" %}</a>
                 <div class="dropdown-menu" aria-labelledby="note_dropdown">
-                    <a class="dropdown-item" href="{% url 'note_list' %}"><i class="fa fa-th-list"
-                                                                             aria-hidden="true"></i> List all</a>
-                    <a class="dropdown-item" href="{% url 'note_add' %}"><i class="fa fa-plus"
-                                                                            aria-hidden="true"></i> Add new</a>
+                    <a class="dropdown-item" href="{% url 'note_list' %}">
+                        <i class="fa fa-th-list" aria-hidden="true"></i> {% trans "List all" %}</a>
+                    <a class="dropdown-item" href="{% url 'note_add' %}">
+                        <i class="fa fa-plus" aria-hidden="true"></i> {% trans "Add new" %}</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="ingredient_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false"><i class="fa fa-lemon-o" aria-hidden="true"></i> Ingredients</a>
+                   aria-expanded="false"><i class="fa fa-lemon-o" aria-hidden="true"></i> {% trans "Ingredients" %}</a>
                 <div class="dropdown-menu" aria-labelledby="ingredient_dropdown">
-                    <a class="dropdown-item" href="{% url 'ingredient_list' %}"><i class="fa fa-th-list"
-                                                                                   aria-hidden="true"></i> List all</a>
-                    <a class="dropdown-item" href="{% url 'ingredient_add' %}"><i class="fa fa-plus"
-                                                                                  aria-hidden="true"></i> Add new</a>
+                    <a class="dropdown-item" href="{% url 'ingredient_list' %}">
+                        <i class="fa fa-th-list" aria-hidden="true"></i> {% trans "List all" %}</a>
+                    <a class="dropdown-item" href="{% url 'ingredient_add' %}">
+                        <i class="fa fa-plus" aria-hidden="true"></i> {% trans "Add new" %}</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dishes_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i> Dishes</a>
+                   aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i> {% trans "Dishes" %}</a>
                 <div class="dropdown-menu" aria-labelledby="dishes_dropdown">
-                    <a class="dropdown-item" href="{% url 'dish_list' %}"><i class="fa fa-th-list"
-                                                                             aria-hidden="true"></i> List all</a>
-                    <a class="dropdown-item" href="{% url 'dish_add' %}"> <i class="fa fa-plus" aria-hidden="true"></i>
-                        Add new</a>
+                    <a class="dropdown-item" href="{% url 'dish_list' %}">
+                        <i class="fa fa-th-list" aria-hidden="true"></i> {% trans "List all" %}</a>
+                    <a class="dropdown-item" href="{% url 'dish_add' %}">
+                        <i class="fa fa-plus" aria-hidden="true"></i> {% trans "Add new" %}</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="orders_dropdown" data-toggle="dropdown"
                    aria-haspopup="true"
-                   aria-expanded="false"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span
-                        class="badge badge-success" id="order_counter"></span></a>
+                   aria-expanded="false"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {% trans "Cart" %}
+                    <span class="badge badge-success" id="order_counter"></span></a>
                 <div class="dropdown-menu" aria-labelledby="dishes_dropdown">
-                    <a class="dropdown-item" href="{% url 'order_list' %}"><i class="fa fa-th-list"
-                                                                              aria-hidden="true"></i> List orders</a>
-                    <a class="dropdown-item" href="{% url 'order_add' %}"> <i class="fa fa-plus" aria-hidden="true"></i>
-                        Place order</a>
+                    <a class="dropdown-item" href="{% url 'order_list' %}">
+                        <i class="fa fa-th-list" aria-hidden="true"></i> {% trans "List orders" %}</a>
+                    <a class="dropdown-item" href="{% url 'order_add' %}">
+                        <i class="fa fa-plus" aria-hidden="true"></i> {% trans "Place order" %}</a>
                 </div>
             </li>
 
@@ -159,11 +175,11 @@
 </main>
 
 <footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; Copyright 2019 by Maksym Nechypurenko</p>
+    <p class="mb-1">&copy; {% trans "Copyright 2019 by Maksym Nechypurenko" %}</p>
     <ul class="list-inline">
-        <li class="list-inline-item"><a href="#">Privacy</a></li>
-        <li class="list-inline-item"><a href="#">Terms</a></li>
-        <li class="list-inline-item"><a href="#">Support</a></li>
+        <li class="list-inline-item"><a href="#">{% trans "Privacy" %}</a></li>
+        <li class="list-inline-item"><a href="#">{% trans "Terms" %}</a></li>
+        <li class="list-inline-item"><a href="#">{% trans "Support" %}</a></li>
     </ul>
 </footer>
 

@@ -1,10 +1,12 @@
 {% extends "foods/base.html" %}
-{% block title %}Foods-Dish{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Foods-Dish" %}{% endblock %}
 {% block search %}
+{% trans "Search" as search %}
 <form class="form-inline my-2 my-lg-0" action="{% url 'dish_search' %}" method="GET">
-    <input required class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+    <input required class="form-control mr-sm-2" type="text" placeholder={{search}} aria-label={{search}}
            name="query" value="{{ query }}">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{{search}}</button>
 </form>
 {% endblock %}
 {% block content %}
@@ -12,7 +14,7 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="text-center">
-            <h2>Dishes</h2>
+            <h2>{% trans "Dishes" %}</h2>
         </div>
 
         <div class="row">
@@ -37,17 +39,17 @@
                             <div class="btn-group">
                                 <a href="{% url 'dish_view' dish.id %}" class="btn btn-sm btn-outline-secondary"
                                    role="button" aria-pressed="true"><i class="fa fa-eye" aria-hidden="true"></i>
-                                    View</a>
+                                    {% trans "View" %}</a>
                                 <a href="{% url 'dish_edit' dish.id %}" class="btn btn-sm btn-outline-secondary"
                                    role="button" aria-pressed="true"><i class="fa fa-pencil" aria-hidden="true"></i>
-                                    Edit</a>
+                                    {% trans "Edit" %}</a>
                             </div>
                         </div>
                         <hr>
                         <p>
-                            <small class="text-muted">Author: {{ dish.author }}</small>
+                            <small class="text-muted">{% trans "Author:" %} {{ dish.author }}</small>
                             <br>
-                            <small class="text-muted">Created: {{ dish.created_on }}</small>
+                            <small class="text-muted">{% trans "Created:" %} {{ dish.created_on }}</small>
                         </p>
                     </div>
                 </div>
@@ -55,7 +57,7 @@
 
             {% endfor %}
             {% else %}
-            <p>No dishes match your search criteria.</p>
+            <p>{% trans "No dishes match your search criteria." %}</p>
             {% endif %}
 
         </div>
