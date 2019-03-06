@@ -35,6 +35,40 @@
                               id="{{ form.description.id }}"
                               rows="3" form="note_add_form"></textarea>
                 </div>
+                <hr class="mb-4">
+                <h4 class="mb-3">{% trans "Noted models:" %}</h4>
+
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-4">
+                        <label for="noted_dish_select">{% trans "Add note to dish:" %}</label>
+                        <select required class="custom-select d-block w-100" name="noted_dish_select" id="noted_dish_select"
+                                form="note_add_form">
+                            <option selected disabled value="">{% trans "Choose dish..." %}</option>
+                            {% if dishes %}
+                            {% for dish in dishes %}
+                            <option value="{{ dish.id }}">{{ dish.name }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                   <div class="col-md-4 mb-4">
+                        <label for="noted_order_select">{% trans "Add note to order:" %}</label>
+                        <select required class="custom-select d-block w-100" name="noted_order_select" id="noted_order_select"
+                                form="note_add_form">
+                            <option selected disabled value="">{% trans "Choose order..." %}</option>
+                            {% if orders %}
+                            {% for order in orders %}
+                            <option value="{{ order.id }}">{{ order.customer }} {{ order.number }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <button type="submit" id="noted_model_submit_btn" class="btn btn-primary">
+                            <i class="fa fa-eraser" aria-hidden="true"></i>{% trans " Erase model" %}
+                        </button>
+                    </div>
+                </div>
 
                 <hr class="mb-4">
 

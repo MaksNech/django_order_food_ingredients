@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-02 21:27+0200\n"
+"POT-Creation-Date: 2019-03-05 11:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,8 +279,8 @@ msgstr "Выберите ингредиент блюда..."
 
 #: foods/templates/foods/dish_add.html:81
 #: foods/templates/foods/dish_edit.html:87
-#: foods/templates/foods/ingredient_add.html:57
-#: foods/templates/foods/ingredient_add.html:58
+#: foods/templates/foods/ingredient_add.html:55
+#: foods/templates/foods/ingredient_add.html:56
 #: foods/templates/foods/ingredient_edit.html:61
 #: foods/templates/foods/ingredient_edit.html:62
 #: foods/templates/foods/order_add.html:64
@@ -311,7 +311,7 @@ msgstr "Ниже форма в которой вы можете редактир
 
 #: foods/templates/foods/dish_edit.html:122
 #: foods/templates/foods/ingredient_edit.html:91
-#: notes/templates/notes/note_edit.html:47
+#: notes/templates/notes/note_edit.html:94
 msgid "Save changes"
 msgstr "Сохранить изменения"
 
@@ -321,7 +321,7 @@ msgstr "Удалить блюдо"
 
 #: foods/templates/foods/dish_edit.html:138
 #: foods/templates/foods/ingredient_edit.html:108
-#: notes/templates/notes/note_edit.html:64
+#: notes/templates/notes/note_edit.html:111
 msgid "Confirm Deletion"
 msgstr "Подтвердить Удаление"
 
@@ -331,13 +331,13 @@ msgstr "Вы уверены что хотите удалить это блюдо
 
 #: foods/templates/foods/dish_edit.html:147
 #: foods/templates/foods/ingredient_edit.html:118
-#: notes/templates/notes/note_edit.html:73
+#: notes/templates/notes/note_edit.html:120
 msgid "No, close"
 msgstr "Нет, закрыть"
 
 #: foods/templates/foods/dish_edit.html:148
 #: foods/templates/foods/ingredient_edit.html:120
-#: notes/templates/notes/note_edit.html:74
+#: notes/templates/notes/note_edit.html:121
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
@@ -388,7 +388,7 @@ msgstr " Информация о блюде:"
 #: foods/templates/foods/dish_view.html:22
 #: foods/templates/foods/ingredient_view.html:23
 #: foods/templates/foods/order_view.html:18
-#: notes/templates/notes/note_view.html:19
+#: notes/templates/notes/note_view.html:36
 msgid "by"
 msgstr " "
 
@@ -400,14 +400,14 @@ msgstr "Ингредиенты:"
 #: foods/templates/foods/dish_view.html:46
 #: foods/templates/foods/ingredient_view.html:30
 #: foods/templates/foods/order_view.html:50
-#: notes/templates/notes/note_view.html:24
+#: notes/templates/notes/note_view.html:41
 msgid "Older"
 msgstr "Назад"
 
 #: foods/templates/foods/dish_view.html:47
 #: foods/templates/foods/ingredient_view.html:31
 #: foods/templates/foods/order_view.html:51
-#: notes/templates/notes/note_view.html:25
+#: notes/templates/notes/note_view.html:42
 msgid "Newer"
 msgstr "Вперёд"
 
@@ -482,34 +482,34 @@ msgstr "Стоимость"
 msgid "Ingredient Cost *"
 msgstr "Стоимость Ингредиента *"
 
-#: foods/templates/foods/ingredient_add.html:54
+#: foods/templates/foods/ingredient_add.html:52
 #: foods/templates/foods/ingredient_edit.html:58
 msgid " per : "
 msgstr " за : "
 
-#: foods/templates/foods/ingredient_add.html:66
+#: foods/templates/foods/ingredient_add.html:64
 #: foods/templates/foods/ingredient_edit.html:70
 msgid "Ingredient Unit *"
 msgstr "Единица Ингредиента *"
 
-#: foods/templates/foods/ingredient_add.html:70
+#: foods/templates/foods/ingredient_add.html:68
 #: foods/templates/foods/ingredient_edit.html:74
 msgid "Choose ingredient unit..."
 msgstr "Выберите единицу ингредиента..."
 
-#: foods/templates/foods/ingredient_add.html:71
+#: foods/templates/foods/ingredient_add.html:69
 #: foods/templates/foods/ingredient_edit.html:76
 #: foods/templates/foods/ingredient_edit.html:79
 msgid "gr"
 msgstr "гр"
 
-#: foods/templates/foods/ingredient_add.html:72
+#: foods/templates/foods/ingredient_add.html:70
 #: foods/templates/foods/ingredient_edit.html:77
 #: foods/templates/foods/ingredient_edit.html:80
 msgid "ml"
 msgstr "мл"
 
-#: foods/templates/foods/ingredient_add.html:82
+#: foods/templates/foods/ingredient_add.html:80
 #: foods/templates/foods/order_add.html:83
 msgid "Add ingredient"
 msgstr "Добавить ингредиент"
@@ -692,7 +692,9 @@ msgstr " групп пользователей."
 #: foods/templates/foods/permission_denied.html:23
 msgid ""
 "For more information, you can contact the administrator of the application."
-msgstr "Для получения дополнительной информации вы можете связаться с администратором приложения."
+msgstr ""
+"Для получения дополнительной информации вы можете связаться с "
+"администратором приложения."
 
 #: notes/templates/notes/note_add.html:3
 msgid "Notes-Note-Add"
@@ -726,7 +728,37 @@ msgstr "Заглавие Заметки *"
 msgid "Note Description *"
 msgstr "Описание Заметки *"
 
-#: notes/templates/notes/note_add.html:42
+#: notes/templates/notes/note_add.html:39
+#: notes/templates/notes/note_edit.html:44
+msgid "Noted models:"
+msgstr "Отмеченные модели:"
+
+#: notes/templates/notes/note_add.html:43
+#: notes/templates/notes/note_edit.html:48
+msgid "Add note to dish:"
+msgstr "Добавить заметку к блюду"
+
+#: notes/templates/notes/note_add.html:46
+#: notes/templates/notes/note_edit.html:53
+msgid "Choose dish..."
+msgstr "Выберите блюдo..."
+
+#: notes/templates/notes/note_add.html:55
+#: notes/templates/notes/note_edit.html:66
+msgid "Add note to order:"
+msgstr "Добавить заметку к заказу"
+
+#: notes/templates/notes/note_add.html:58
+#: notes/templates/notes/note_edit.html:72
+msgid "Choose order..."
+msgstr "Выберите заказ..."
+
+#: notes/templates/notes/note_add.html:68
+#: notes/templates/notes/note_edit.html:86
+msgid " Erase model"
+msgstr "Стереть модель"
+
+#: notes/templates/notes/note_add.html:76
 msgid "Add note"
 msgstr "Добавить заметку"
 
@@ -738,11 +770,11 @@ msgstr "Notes-Заметка-Редактирование"
 msgid "Below is a form in which you can edit the note."
 msgstr "Ниже форма в которой вы можете редактировать заметку."
 
-#: notes/templates/notes/note_edit.html:51
+#: notes/templates/notes/note_edit.html:98
 msgid "Delete note"
 msgstr "Удалить заметку"
 
-#: notes/templates/notes/note_edit.html:70
+#: notes/templates/notes/note_edit.html:117
 msgid "Are you sure you want to delete this note?"
 msgstr "Вы уверены что хотите удалить эту заметку?"
 
@@ -762,14 +794,30 @@ msgstr "Notes-Заметка-Просмотр"
 msgid " Note description:"
 msgstr " Описание заметки:"
 
-#: notes/templates/notes/note_view.html:36
+#: notes/templates/notes/note_view.html:20
+msgid " Noted model:"
+msgstr " Отмеченная модель:"
+
+#: notes/templates/notes/note_view.html:25
+msgid "Order:"
+msgstr "Заказ:"
+
+#: notes/templates/notes/note_view.html:30
+msgid "Dish:"
+msgstr "Блюдо:"
+
+#: notes/templates/notes/note_view.html:33
+msgid "There are no noted models yet."
+msgstr "Здесь еще нет отмеченных моделей."
+
+#: notes/templates/notes/note_view.html:53
 msgid "Note is not found."
 msgstr "Заметка не найдена."
 
-#: order_food_online/settings.py:119
+#: order_food_online/settings.py:125
 msgid "English"
 msgstr "Английский"
 
-#: order_food_online/settings.py:120
+#: order_food_online/settings.py:126
 msgid "Russian"
 msgstr "Русский"

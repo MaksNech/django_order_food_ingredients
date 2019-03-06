@@ -19,8 +19,8 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.conf.urls.static import static
 
-
 urlpatterns = [
+    path('api/v1/', include('api.urls')),
     path('', lambda request: redirect('foods/', permanent=True)),
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('notes/', include('notes.urls')),
     path('authentication/', include('authentication.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

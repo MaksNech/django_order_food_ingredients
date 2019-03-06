@@ -1,9 +1,12 @@
 import uuid
 from django.db import models
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
-from django.contrib.auth.models import Group, Permission
 from django.conf import settings
+from django.dispatch import receiver
+from notes.models import NotedModel
+from django.db.models.signals import post_delete, post_save
+from django.contrib.auth.models import Group, Permission
+from rest_framework.authtoken.models import Token
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 def get_allowed_groups(codename):
@@ -41,12 +44,6 @@ class Ingredient(models.Model):
         ordering = ['-created_on']
 
 
-# delete img with ingredient instance
-@receiver(post_delete, sender=Ingredient)
-def ingredient_img_delete(sender, instance, **kwargs):
-    instance.img.delete(False)
-
-
 class Dish(models.Model):
     name = models.CharField(max_length=100, unique=True)
     img = models.ImageField(upload_to='dishes/', null=True)
@@ -56,6 +53,7 @@ class Dish(models.Model):
                                          related_name='dishes')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users_dish_authors',
                                blank=True, null=True)
+    notes = GenericRelation(NotedModel)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -63,12 +61,6 @@ class Dish(models.Model):
 
     class Meta:
         ordering = ['-created_on']
-
-
-# delete img with dish instance
-@receiver(post_delete, sender=Dish)
-def dish_img_delete(sender, instance, **kwargs):
-    instance.img.delete(False)
 
 
 class DishIngredients(models.Model):
@@ -106,6 +98,7 @@ class Order(models.Model):
     )
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='users_customers',
                                  blank=True, null=True)
+    notes = GenericRelation(NotedModel)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -127,3 +120,28 @@ class OrderIngredients(models.Model):
     def __str__(self):
         return "Order: {} | Ingredient: {} | Quantity: {} | Cost: {}".format(self.order, self.ingredient, self.quantity,
                                                                              self.cost)
+
+
+# SIGNALS:  ############################################################################################################
+# Begin
+
+# delete img with ingredient instance
+@receiver(post_delete, sender=Ingredient)
+def ingredient_img_delete(sender, instance, **kwargs):
+    instance.img.delete(False)
+
+
+# delete img with dish instance
+@receiver(post_delete, sender=Dish)
+def dish_img_delete(sender, instance, **kwargs):
+    instance.img.delete(False)
+
+
+# automatically generated Token to every rest api user
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
+# End
+########################################################################################################################

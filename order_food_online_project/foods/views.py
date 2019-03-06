@@ -261,7 +261,7 @@ def order_add(request):
                     added_ingred = Ingredient.objects.get(id=int(ingredient_id))
                     OrderIngredients.objects.create(order=new_order, ingredient=added_ingred,
                                                     quantity=ingredient_quantity, cost=ingredient_cost)
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('order_list'))
 
         form = OrderAddForm()
 

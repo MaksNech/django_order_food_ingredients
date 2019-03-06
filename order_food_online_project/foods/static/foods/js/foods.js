@@ -370,6 +370,36 @@ $(document).ready(function () {
 
 //The End
 ///////////////////////////////////////////////////////////////////////////////////
+
+// note_add.html JS //////////////////////////////////////////////////////////////
+//The Begin
+
+$('#noted_dish_select,#noted_order_select').on('change', function () {
+        var selectNotedDish = $("#noted_dish_select").val();
+        var selectNotedOrder = $("#noted_order_select").val();
+        if (selectNotedDish != null) {
+            $('#noted_order_select').attr('disabled', true);
+            $('#noted_order_select').attr('required', false);
+        };
+        if (selectNotedOrder != null) {
+            $('#noted_dish_select').attr('disabled', true);
+            $('#noted_dish_select').attr('required', false);
+        };
+    });
+
+$("#noted_model_submit_btn").on("click", function () {
+        $('#noted_dish_select').val(null);
+        $('#noted_order_select').val(null);
+        $('#noted_order_select').attr('disabled', false);
+        $('#noted_dish_select').attr('disabled', false);
+        $('#noted_dish_select').attr('required', true);
+        $('#noted_order_select').attr('required', true);
+
+    });
+
+
+//The End
+///////////////////////////////////////////////////////////////////////////////////
 });
 
 

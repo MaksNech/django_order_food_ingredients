@@ -55,6 +55,8 @@ ALTER ROLE admin SET timezone TO 'UTC';
 
 GRANT ALL PRIVILEGES ON DATABASE order_food_db TO admin;
 
+ALTER USER admin CREATEDB;
+
 \q
 ```
 
@@ -110,7 +112,13 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-## 4: Celery:
+## 4: Tests:
+### Inside the project directory run tests with terminal command:
+```bash
+python manage.py test
+```
+
+## 5: Celery:
 ### Running Locally:
 #### Install Redis as a Celery “Broker” in your system, not in virtualenv:
 ```bash
@@ -166,4 +174,43 @@ $ sudo supervisorctl stop order_food_online_celery
 $ sudo supervisorctl start order_food_online_celery
 
 $ sudo supervisorctl status order_food_online_celery
+```
+
+## 6: Django REST framework:
+### Running Locally:
+#### User authentication through token-auth:
+##### Install Postman HTTP client. Inside Postman choose POST Request to:
+```bash
+http://127.0.0.1:8000/api/v1/api-token-auth/
+```
+##### with Body-raw as JSON(application/json) and put inside credentials: 
+```bash
+{"username":"admin","password":"123"}
+```
+##### and send that.
+##### Then copy generated token string from Response, choose in Postman GET Request to:
+```bash
+http://127.0.0.1:8000/api/v1/routes/<resource>
+```
+##### where "resource" is the name of db model in plural, for example "ingredients" or "dishes", then, set in 
+##### http "Authorization" header such string:
+```bash
+Token <copied generated token>
+```
+##### where "copied generated token" should be prefixed by the string literal "Token", with whitespace separating the
+##### two strings.
+
+#### User authentication through rest-auth:
+##### In browser go to the:
+```bash
+http://127.0.0.1:8000/api/v1/rest-auth/login/
+```
+##### and in the form below you can enter a password and a username of the user that is already registered. 
+##### Then you could go to the:
+```bash
+http://127.0.0.1:8000/api/v1/
+```
+##### where you can see a url list of the Api, or logout with POST request in:
+```bash
+http://127.0.0.1:8000/api/v1/rest-auth/logout/
 ```

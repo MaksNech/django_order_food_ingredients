@@ -16,6 +16,23 @@
                 <div class="blog-post">
                     <h3 class="blog-post-title">{% trans " Note description:" %}</h3>
                     <p>{{ note.description }}</p>
+                    <hr>
+                    <h3 class="blog-post-title">{% trans " Noted model:" %}</h3>
+                    {% if model_instance %}
+                    {% if model_instance_class == 'order' %}
+                    <a href="{% url 'order_view' model_instance.id %}"
+                       class='list-group-item list-group-item-action d-flex align-items-center
+                                   justify-content-between'><span>{% trans "Order:" %} {{model_instance.number}}</span></a>
+                    {% endif %}
+                    {% if model_instance_class == 'dish' %}
+                    <a href="{% url 'dish_view' model_instance.id %}"
+                       class='list-group-item list-group-item-action d-flex align-items-center
+                                   justify-content-between'><span>{% trans "Dish:" %} {{model_instance.name}}</span></a>
+                    {% endif %}
+                    {% else %}
+                    <p>{% trans "There are no noted models yet." %}</p>
+                    {% endif %}
+                    <hr>
                     <p class="blog-post-meta">{{ note.created_on }} {% trans "by" %} <a href="#"></a></p>
                     <hr>
                 </div>
