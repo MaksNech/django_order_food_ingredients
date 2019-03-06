@@ -27,19 +27,66 @@
 
             <div class="mb-3">
                 {% trans "Title" as title %}
-                    <label for="{{ form.title.id }}">{% trans "Note Title *" %}</label>
-                    <input required type="text" class="form-control" name="{{ form.title.name }}"
-                           id="{{ form.title.id }}"
-                           placeholder={{title}}
-                           form="note_edit_form" value="{{ note.title }}">
-                </div>
+                <label for="{{ form.title.id }}">{% trans "Note Title *" %}</label>
+                <input required type="text" class="form-control" name="{{ form.title.name }}"
+                       id="{{ form.title.id }}"
+                       placeholder={{title}}
+                       form="note_edit_form" value="{{ note.title }}">
+            </div>
 
-               <div class="mb-3">
-                    <label for="{{ form.description.id }}">{% trans "Note Description *" %}</label>
-                    <textarea required class="form-control" name="{{ form.description.name }}"
-                              id="{{ form.description.id }}"
-                              rows="3" form="note_edit_form">{{ note.description }}</textarea>
+            <div class="mb-3">
+                <label for="{{ form.description.id }}">{% trans "Note Description *" %}</label>
+                <textarea required class="form-control" name="{{ form.description.name }}"
+                          id="{{ form.description.id }}"
+                          rows="3" form="note_edit_form">{{ note.description }}</textarea>
+            </div>
+            <hr class="mb-4">
+            <h4 class="mb-3">{% trans "Noted models:" %}</h4>
+
+            <div class="row align-items-end">
+                <div class="col-md-4 mb-4">
+                    <label for="noted_dish_select">{% trans "Add note to dish:" %}</label>
+                    <select {% if dish_select_disabled %} disabled {% endif %}
+                            {% if dish_select_required %} required {% endif %}
+                            class="custom-select d-block w-100" name="noted_dish_select" id="noted_dish_select"
+                            form="note_edit_form">
+                        <option selected={{dish_select_disabled}} disabled value="">{% trans "Choose dish..." %}</option>
+                        {% if dishes %}
+                        {% for dish in dishes %}
+                        {% if dish.id == dish_id %}
+                        <option selected value="{{ dish.id }}">{{ dish.name }}</option>
+                        {% else %}
+                        <option value="{{ dish.id }}">{{ dish.name }}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
+                <div class="col-md-4 mb-4">
+                    <label for="noted_order_select">{% trans "Add note to order:" %}</label>
+                    <select {% if order_select_disabled %} disabled {% endif %}
+                            {% if order_select_required %} required {% endif %}
+                            class="custom-select d-block w-100" name="noted_order_select"
+                            id="noted_order_select"
+                            form="note_edit_form">
+                        <option selected={{order_select_disabled}} disabled value="">{% trans "Choose order..." %}</option>
+                        {% if orders %}
+                        {% for order in orders %}
+                        {% if order.id == order_id %}
+                        <option selected value="{{ order.id }}">{{ order.customer }} {{ order.number }}</option>
+                        {% else %}
+                        <option value="{{ order.id }}">{{ order.customer }} {{ order.number }}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <button type="submit" id="noted_model_submit_btn" class="btn btn-primary">
+                        <i class="fa fa-eraser" aria-hidden="true"></i>{% trans " Erase model" %}
+                    </button>
+                </div>
+            </div>
 
             <hr class="mb-4">
 

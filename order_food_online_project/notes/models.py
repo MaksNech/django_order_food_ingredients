@@ -22,7 +22,7 @@ class NotedModel(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return self.note
+        return self.note.title
 
     class Meta:
         ordering = ['-note__created_on']

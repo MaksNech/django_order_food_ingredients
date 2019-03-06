@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import NotedModel, Note
-from django.contrib.contenttypes.admin import GenericTabularInline
 
-class NotedModelInline(GenericTabularInline):
+
+class NotedModelInline(admin.TabularInline):
     model = NotedModel
 
 
@@ -19,7 +19,6 @@ class NotedModelAdmin(admin.ModelAdmin):
     list_display = ('content_type', 'object_id', 'content_object', 'note_title', 'note_description', 'note_created_on')
     list_filter = ('content_type',)
     search_fields = ('content_type', 'object_id', 'content_object',)
-
 
     def note_title(self, obj):
         return obj.note.title
