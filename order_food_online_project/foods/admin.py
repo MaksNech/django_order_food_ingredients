@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ingredient, Dish, Order, Section, DishIngredients, OrderIngredients
+from .models import Ingredient, Dish, Order, Section, DishIngredients, OrderIngredients, Comment
 
 
 class DishIngredientsInline(admin.TabularInline):
@@ -13,6 +13,23 @@ class OrderIngredientsInline(admin.TabularInline):
     extra = 1
 
 
+class DishCommentInline(admin.TabularInline):
+    model = Comment
+    extra = 1
+
+
+class SectionAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    list_filter = ('name',)
+    search_fields = ('name',)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('dish', 'author', 'body',)
+    list_filter = ('dish', 'author',)
+    search_fields = ('dish', 'author',)
+
+
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'unit')
     list_filter = ('name', 'unit',)
@@ -21,9 +38,10 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 class DishAdmin(admin.ModelAdmin):
-    list_display = ('name', 'section')
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ('name', 'section', 'slug')
     list_filter = ('name', 'section',)
-    inlines = (DishIngredientsInline,)
+    inlines = (DishIngredientsInline, DishCommentInline)
     search_fields = ('name',)
 
 
@@ -46,7 +64,8 @@ class OrderIngredientsAdmin(admin.ModelAdmin):
     search_fields = ('order__number', 'ingredient__name')
 
 
-admin.site.register(Section)
+admin.site.register(Section, SectionAdmin)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Dish, DishAdmin)
 admin.site.register(Order, OrderAdmin)

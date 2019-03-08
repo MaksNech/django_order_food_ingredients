@@ -3,11 +3,12 @@ from rest_framework import routers
 from rest_framework.authtoken import views as authtoken_views
 from authentication.api_views import UserListView
 from foods.api_views import SectionViewSet, IngredientViewSet, DishViewSet, OrderViewSet, DishIngredientsViewSet, \
-    OrderIngredientsViewSet
+    OrderIngredientsViewSet, CommentViewSet
 from notes.api_views import NoteViewSet, NotedModelViewSet
 
 router = routers.DefaultRouter()
 router.register('sections', SectionViewSet)
+router.register('comments', CommentViewSet)
 router.register('ingredients', IngredientViewSet)
 router.register('dishes', DishViewSet)
 router.register('orders', OrderViewSet)

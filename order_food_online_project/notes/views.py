@@ -36,7 +36,7 @@ def note_add(request):
                 new_note = form.save()
                 NotedModel.objects.create(content_object=model_instance, note=new_note)
 
-                return HttpResponseRedirect(reverse('note_list'))
+                return HttpResponseRedirect(reverse('note_view', kwargs={'note_id': new_note.id}))
 
         form = NoteAddForm()
         dishes = Dish.objects.all()
@@ -86,7 +86,7 @@ def note_edit(request, note_id):
                     NotedModel.objects.filter(note__id=edit_note.id).delete()
                     NotedModel.objects.create(content_object=model_instance, note=edit_note)
 
-                    return HttpResponseRedirect(reverse('note_list'))
+                    return HttpResponseRedirect(reverse('note_view', kwargs={'note_id': edit_note.id}))
 
             form = NoteAddForm()
             dishes = Dish.objects.all()

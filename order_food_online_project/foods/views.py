@@ -5,8 +5,9 @@ from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from .models import Dish, DishIngredients, Ingredient, OrderIngredients, Order, Section
-from .forms import DishAddForm, IngredientAddForm, OrderAddForm
+
+from .models import Dish, DishIngredients, Ingredient, OrderIngredients, Order, Section, Comment
+from .forms import DishAddForm, IngredientAddForm, OrderAddForm, CommentAddForm
 from .models import get_allowed_groups
 
 
@@ -44,7 +45,7 @@ def ingredient_add(request):
                 ingredient = form.save(commit=False)
                 ingredient.author = request.user
                 ingredient.save()
-                return HttpResponseRedirect(reverse('ingredient_list'))
+                return HttpResponseRedirect(reverse('ingredient_view', kwargs={'ingredient_id': ingredient.id}))
 
         form = IngredientAddForm()
 
@@ -71,7 +72,7 @@ def ingredient_edit(request, ingredient_id):
                 if form.is_valid():
                     form.save()
 
-                    return HttpResponseRedirect(reverse('ingredient_list'))
+                    return HttpResponseRedirect(reverse('ingredient_view', kwargs={'ingredient_id': ingredient.id}))
 
             form = IngredientAddForm()
 
@@ -130,7 +131,7 @@ def dish_add(request):
                 for key, val in data.items():
                     DishIngredients.objects.create(dish=new_dish, ingredient=key, quantity=val)
 
-                return HttpResponseRedirect(reverse('dish_list'))
+                return HttpResponseRedirect(reverse('dish_view', kwargs={'dish_slug': new_dish.slug}))
 
         form = DishAddForm()
         sections = Section.objects.all()
@@ -144,9 +145,11 @@ def dish_add(request):
         return HttpResponseRedirect(reverse('permission_denied'))
 
 
-def dish_view(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
-    dish_ingredients = DishIngredients.objects.filter(dish__id=dish_id)
+def dish_view(request, dish_slug):
+    dish = Dish.objects.get(slug=dish_slug)
+    dish_ingredients = DishIngredients.objects.filter(dish__id=dish.id)
+    form = CommentAddForm(request.POST, request.FILES)
+    comments = Comment.objects.filter(dish=dish)
     ingredients = []
     if dish_ingredients:
         for dish_ingredient in dish_ingredients:
@@ -155,7 +158,8 @@ def dish_view(request, dish_id):
                                 "unit": ingredient.unit})
 
     if dish:
-        return render(request, 'foods/dish_view.html', context={'dish': dish, 'ingredients': ingredients})
+        return render(request, 'foods/dish_view.html', context={'dish': dish, 'ingredients': ingredients, 'form': form,
+                                                                'comments': comments})
 
 
 def dish_edit(request, dish_id):
@@ -184,7 +188,7 @@ def dish_edit(request, dish_id):
 
                     for key, val in data.items():
                         DishIngredients.objects.create(dish=edit_dish, ingredient=key, quantity=val)
-                    return HttpResponseRedirect(reverse('dish_list'))
+                    return HttpResponseRedirect(reverse('dish_view', kwargs={'dish_id': edit_dish.id}))
 
             form = DishAddForm()
             sections = Section.objects.all()
@@ -261,7 +265,7 @@ def order_add(request):
                     added_ingred = Ingredient.objects.get(id=int(ingredient_id))
                     OrderIngredients.objects.create(order=new_order, ingredient=added_ingred,
                                                     quantity=ingredient_quantity, cost=ingredient_cost)
-                return HttpResponseRedirect(reverse('order_list'))
+                return HttpResponseRedirect(reverse('order_view', kwargs={'order_id': new_order.id}))
 
         form = OrderAddForm()
 

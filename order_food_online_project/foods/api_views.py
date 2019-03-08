@@ -1,9 +1,10 @@
 from rest_framework import viewsets
-from .models import Section, Ingredient, Dish, Order, DishIngredients, OrderIngredients
+from .models import Section, Ingredient, Dish, Order, DishIngredients, OrderIngredients, Comment
 from .serializers import SectionSerializer, IngredientSerializer, DishSerializer, OrderSerializer, \
-    DishIngredientsSerializer, OrderIngredientsSerializer
+    DishIngredientsSerializer, OrderIngredientsSerializer, CommentSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAuthorOrReadOnly, IsCustomerOrReadOnly
+from django.template.defaultfilters import slugify
 
 
 class SectionViewSet(viewsets.ModelViewSet):
@@ -28,6 +29,7 @@ class DishViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+        serializer.save(slug=slugify(self.name))
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -49,3 +51,12 @@ class OrderIngredientsViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = OrderIngredients.objects.all()
     serializer_class = OrderIngredientsSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
