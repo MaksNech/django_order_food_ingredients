@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-05 11:58+0200\n"
+"POT-Creation-Date: 2019-03-08 18:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,6 +79,7 @@ msgstr "Ниже форма в которой вы можете зарегест
 #: authentication/templates/registration/register.html:18
 #: foods/templates/foods/dish_add.html:18
 #: foods/templates/foods/dish_edit.html:18
+#: foods/templates/foods/dish_view.html:57
 #: foods/templates/foods/ingredient_add.html:17
 #: foods/templates/foods/ingredient_edit.html:17
 #: foods/templates/foods/order_add.html:18
@@ -363,6 +364,7 @@ msgid "Edit"
 msgstr "Редактировать"
 
 #: foods/templates/foods/dish_list.html:50
+#: foods/templates/foods/dish_view.html:83
 #: foods/templates/foods/ingredient_list.html:47
 msgid "Author:"
 msgstr "Автор:"
@@ -392,26 +394,46 @@ msgstr " Информация о блюде:"
 msgid "by"
 msgstr " "
 
-#: foods/templates/foods/dish_view.html:27
+#: foods/templates/foods/dish_view.html:28
 #: foods/templates/foods/order_view.html:27
 msgid "Ingredients:"
 msgstr "Ингредиенты:"
 
-#: foods/templates/foods/dish_view.html:46
+#: foods/templates/foods/dish_view.html:48
 #: foods/templates/foods/ingredient_view.html:30
 #: foods/templates/foods/order_view.html:50
 #: notes/templates/notes/note_view.html:41
 msgid "Older"
 msgstr "Назад"
 
-#: foods/templates/foods/dish_view.html:47
+#: foods/templates/foods/dish_view.html:49
 #: foods/templates/foods/ingredient_view.html:31
 #: foods/templates/foods/order_view.html:51
 #: notes/templates/notes/note_view.html:42
 msgid "Newer"
 msgstr "Вперёд"
 
-#: foods/templates/foods/dish_view.html:58
+#: foods/templates/foods/dish_view.html:56
+msgid "Add comment:"
+msgstr "Добавить комментарий:"
+
+#: foods/templates/foods/dish_view.html:63
+msgid "Comment *"
+msgstr "Комментарий *"
+
+#: foods/templates/foods/dish_view.html:71
+msgid "Add comment"
+msgstr "Добавить комментарий"
+
+#: foods/templates/foods/dish_view.html:78
+msgid "Comments:"
+msgstr "Комментарии:"
+
+#: foods/templates/foods/dish_view.html:90
+msgid "There are no comments yet."
+msgstr "Здесь еще нет комментариев."
+
+#: foods/templates/foods/dish_view.html:103
 msgid "Dish is not found."
 msgstr "Блюдо не найдено."
 
@@ -782,7 +804,7 @@ msgstr "Вы уверены что хотите удалить эту замет
 msgid "Notes-Note"
 msgstr "Notes-Заметка"
 
-#: notes/templates/notes/note_list.html:49
+#: notes/templates/notes/note_list.html:53
 msgid "No notes match your search criteria."
 msgstr "Нет заметок, соответствующих вашим критериям поиска."
 
@@ -814,10 +836,10 @@ msgstr "Здесь еще нет отмеченных моделей."
 msgid "Note is not found."
 msgstr "Заметка не найдена."
 
-#: order_food_online/settings.py:125
+#: order_food_online/settings.py:126
 msgid "English"
 msgstr "Английский"
 
-#: order_food_online/settings.py:126
+#: order_food_online/settings.py:127
 msgid "Russian"
 msgstr "Русский"

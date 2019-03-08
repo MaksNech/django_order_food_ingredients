@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Section, Ingredient, Dish, Order, DishIngredients, OrderIngredients
+from .models import Section, Ingredient, Dish, Order, DishIngredients, OrderIngredients, Comment
 from authentication.serializers import UserSerializer
 
 
@@ -33,11 +33,12 @@ class IngredientSerializer(serializers.ModelSerializer):
 class DishSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
     author = serializers.ReadOnlyField(source='author.username')
+    slug = serializers.ReadOnlyField()
     section = serializers.PrimaryKeyRelatedField(queryset=Section.objects.all(), allow_null=False, required=True)
 
     class Meta:
         model = Dish
-        fields = ('id', 'name', 'img', 'description', 'section', 'ingredients', 'author', 'created_on')
+        fields = ('id', 'name', 'slug', 'img', 'description', 'section', 'ingredients', 'author', 'created_on')
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -65,3 +66,12 @@ class OrderIngredientsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderIngredients
         fields = ('id', 'order', 'ingredient', 'quantity', 'cost')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    dish = serializers.PrimaryKeyRelatedField(queryset=Dish.objects.all(), allow_null=False, required=True)
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'dish', 'body', 'author')

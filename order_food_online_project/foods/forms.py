@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 
-from .models import Dish,  Ingredient, Order
+from .models import Dish, Ingredient, Order, Comment
 
 
 class IngredientAddForm(ModelForm):
@@ -20,3 +20,9 @@ class OrderAddForm(ModelForm):
     class Meta:
         model = Order
         fields = ['cost']
+
+
+class CommentAddForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['dish', 'body']

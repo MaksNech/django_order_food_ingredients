@@ -214,3 +214,10 @@ http://127.0.0.1:8000/api/v1/
 ```bash
 http://127.0.0.1:8000/api/v1/rest-auth/logout/
 ```
+
+## 7: Django Channels:
+### Running Locally:
+#### Run Redis:
+```bash
+redis-server
+```

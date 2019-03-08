@@ -26,7 +26,7 @@ SECRET_KEY = '$pu=_%6bm*nr^6%o=^#!2&^4e26!f^zv2zo&woo=f4@x2h&re1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -197,4 +198,18 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
+}
+
+
+# DJANGO CHANNELS
+
+ASGI_APPLICATION = "order_food_online.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }

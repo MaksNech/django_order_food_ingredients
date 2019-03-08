@@ -7,6 +7,7 @@ from django.db.models.signals import post_delete, post_save
 from django.contrib.auth.models import Group, Permission
 from rest_framework.authtoken.models import Token
 from django.contrib.contenttypes.fields import GenericRelation
+from django.template.defaultfilters import slugify
 
 
 def get_allowed_groups(codename):
@@ -25,6 +26,20 @@ class Section(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+class Comment(models.Model):
+    dish = models.ForeignKey('Dish', on_delete=models.CASCADE, related_name='dish', null=True)
+    body = models.CharField(max_length=500)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                               related_name='users_comment_authors', blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Dish: {} | Author: {}".format(self.dish, self.author)
+
+    class Meta:
+        ordering = ['created_on']
 
 
 class Ingredient(models.Model):
@@ -46,6 +61,7 @@ class Ingredient(models.Model):
 
 class Dish(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True)
     img = models.ImageField(upload_to='dishes/', null=True)
     description = models.CharField(max_length=300, null=True)
     section = models.ForeignKey('Section', on_delete=models.CASCADE, related_name='dishes', null=True)
@@ -58,6 +74,10 @@ class Dish(models.Model):
 
     def __str__(self):
         return "Name: {} | Section: {}".format(self.name, self.section)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Dish, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_on']

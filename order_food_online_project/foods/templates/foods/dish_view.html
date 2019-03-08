@@ -19,7 +19,8 @@
                          width="460" height="345"><br>
                     {% endif %}
                     <h3 class="blog-post-title">{% trans " Dish info:" %}</h3>
-                    <p class="blog-post-meta">{{ dish.created_on }} {% trans "by" %} <a href="#">{{ dish.author }}</a></p>
+                    <p class="blog-post-meta">{{ dish.created_on }} {% trans "by" %} <a href="#">{{ dish.author }}</a>
+                    </p>
                     <hr>
                     <p>{{ dish.description }}</p>
                     {% if ingredients %}
@@ -42,10 +43,57 @@
                     {% endif %}
                 </div>
 
+
                 <nav class="blog-pagination">
                     <a class="btn btn-outline-primary" href="#">{% trans "Older" %}</a>
                     <a class="btn btn-outline-secondary disabled" href="#">{% trans "Newer" %}</a>
                 </nav>
+
+            </div>
+
+            <div class="col-md-8 col-xs-8 col-centered">
+                <hr class="mb-4">
+                {% if user.is_authenticated %}
+
+                <h3 class="mb-3">{% trans "Add comment:" %}</h3>
+                <p class="text-muted">{% trans "Required Field *" %}</p>
+                <form class="needs-validation" name="comment_add_form" id="comment_add_form" action=""
+                      method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type='hidden' id='hidden_input' value="{{ user.id }}"  data-post='{{ dish.slug }}'>
+                    <div class="mb-3">
+                        <label for="comment_body">{% trans "Comment *" %}</label>
+                        <textarea required class="form-control" name="comment_body" id="comment_body"
+                                  rows="3" form="comment_add_form"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button id="add_comment_btn" class="btn btn-primary btn-lg btn-block" type="submit"
+                                form="comment_add_form">
+                            {% trans "Add comment" %}
+                        </button>
+                    </div>
+
+                </form>
+                <hr class="mb-4">
+                {% endif %}
+
+                <h3 class="mb-3">{% trans "Comments:" %}</h3>
+                {% if comments %}
+                {% for comment in comments %}
+                <div class='mb-3'>
+                    <p>{{ comment.body }}</p>
+                    <small>{% trans "Author:" %} {{ comment.author.username }}</small>
+                    <br>
+                    <small>{{ comment.created_on|date:"Y-m-d H:i:s" }}</small>
+                    <hr>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>{% trans "There are no comments yet." %}</p>
+                {% endif %}
+                <div class='mb-3' id='comments'>
+                    <!--div for add comment-->
+                </div>
 
             </div>
 

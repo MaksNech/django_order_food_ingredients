@@ -4,6 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Rolled Stuffed Flank Steak",
+      "slug": "rolled-stuffed-flank-steak",
       "img": "/dishes/RolledStuffedFlankSteakVertical.jpg",
       "description": "Butterflied flank steak that is marinated, rolled up with prosciutto, basil, Parmesan, and roasted bell peppers, and then roasted in the oven. Great for a party.",
       "section": 2,
@@ -15,6 +16,7 @@
     "pk": 2,
     "fields": {
       "name": "Chicken Milanese",
+      "slug": "chicken-milanese",
       "img": "/dishes/ChickenMilanese.jpg",
       "description": "This classic Italian Chicken Milanese is surprisingly EASY and FAST to make at home. Serve it with a side salad for an easy weeknight meal. Also works as a make-ahead dish!",
       "section": 2,
@@ -26,6 +28,7 @@
     "pk": 3,
     "fields": {
       "name": "Cincinnati Chili",
+      "slug": "cincinnati-chili",
       "img": "/dishes/CincinnatiChili.jpg",
       "description": "Authentic Cincinnati Chili is a meaty, rich, and uniquely spiced chili from (you guessed it!) Cincinnati, Ohio. It's served over hot spaghetti with your choice of toppings. Don’t forget the cheese and oyster crackers!",
       "section": 2,
@@ -37,6 +40,7 @@
     "pk": 4,
     "fields": {
       "name": "Red Velvet Cookies",
+      "slug": "red-velvet-cookies",
       "img": "/dishes/RedVelvetCookies.jpg",
       "description": "Red velvet cake in cookie form—that's what you've got here with these Red Velvet Cookies! Cream cheese and white chocolate chips lend tanginess and sweetness to every bite.",
       "section": 3,
@@ -48,6 +52,7 @@
     "pk": 5,
     "fields": {
       "name": "Walnut Snowball Cookies",
+      "slug": "walnut-snowball-cookies",
       "img": "/dishes/WalnutSnowballCookiesVertical.jpg",
       "description": "These festive holiday Snowball Cookies are made with finely chopped walnuts, flour, and vanilla, then rolled into balls and dusted with powdered sugar. They freeze well and ship well, too!",
       "section": 3,
@@ -59,6 +64,7 @@
     "pk": 6,
     "fields": {
       "name": "Perfect Cheesecake",
+      "slug": "perfect-cheesecake",
       "img": "/dishes/PerfectCheesecakeVertical.jpg",
       "description": "Say hello to your new favorite cheesecake recipe! This is a classic New York cheesecake, baked in the oven. A water bath, plus lots of tips and guidance, help you make the best, silkiest, creamiest cheesecake EVER.",
       "section": 3,
@@ -70,6 +76,7 @@
     "pk": 7,
     "fields": {
       "name": "Peanut Butter Blossoms",
+      "slug": "peanut-butter-blossoms",
       "img": "/dishes/PeanutButterBlossoms.jpg",
       "description": "Peanut Butter Blossom Cookies! When was the last time you made these favorite childhood cookies? Don't know? Let's remedy that. Chocolate and peanut butter belong together, and these easy cookies prove it.",
       "section": 3,
@@ -81,6 +88,7 @@
     "pk": 8,
     "fields": {
       "name": "Seafood Paella",
+      "slug": "seafood-paella",
       "img": "/dishes/SeafoodPaella.jpg",
       "description": "This saffron-infused Seafood Paella is loaded with mussels, clams, and shrimp. Cook it on the grill for best flavor. It serves a crowd and would be so much fun for your next cookout!",
       "section": 1,
@@ -92,6 +100,7 @@
     "pk": 9,
     "fields": {
       "name": "Minestrone Soup",
+      "slug": "minestrone-soup",
       "img": "/dishes/MinestroneSoup.jpg",
       "description": "Minestrone soup is an Italian classic! This version is made with cannellini beans, chicken stock, cabbage, potato, zucchini, carrots, plum tomatoes, and Parmesan cheese.",
       "section": 1,
@@ -103,6 +112,7 @@
     "pk": 10,
     "fields": {
       "name": "Simple Cauliflower Soup",
+      "slug": "simple-cauliflower-soup",
       "img": "/dishes/SimpleCauliflowerSoup.jpg",
       "description": "This simple cauliflower soup is made with just five ingredients, including salt! It's a quick and easy weeknight meal that's easy to dress up or down. Dinner is served!",
       "section": 1,
