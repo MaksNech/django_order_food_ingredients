@@ -3,6 +3,9 @@ import json
 from authentication.models import CustomUser
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 from .models import Dish, Comment
 
@@ -66,3 +69,30 @@ class CommentAddConsumer(AsyncConsumer):
             'type': 'websocket.send',
             'text': event['text']
         })
+
+
+class UpdateDishListConsumer(WebsocketConsumer):
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)("dish", self.channel_name)
+        self.accept()
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)("dish", self.channel_name)
+
+    def receive(self, text_data=None, bytes_data=None):
+        pass
+
+    def send_message(self, event):
+        self.send(text_data=event['text'])
+
+
+def ws_reload_page():
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)(
+        "dish",
+        {
+            "type": "send_message",
+            "text": json.dumps({'message': 'reload'}),
+        }
+    )
+

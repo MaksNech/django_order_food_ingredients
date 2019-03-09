@@ -29,7 +29,6 @@ class DishViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-        serializer.save(slug=slugify(self.name))
 
 
 class OrderViewSet(viewsets.ModelViewSet):

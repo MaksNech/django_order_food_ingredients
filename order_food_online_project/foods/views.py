@@ -5,10 +5,13 @@ from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
+from rest_framework.authtoken.models import Token
 
 from .models import Dish, DishIngredients, Ingredient, OrderIngredients, Order, Section, Comment
 from .forms import DishAddForm, IngredientAddForm, OrderAddForm, CommentAddForm
 from .models import get_allowed_groups
+from .consumers import ws_reload_page
+
 
 
 def permission_denied(request):
@@ -97,8 +100,11 @@ def ingredient_delete(request, ingredient_id):
 
 
 def dish_list(request):
+    token = ''
+    if request.user.is_authenticated:
+        token, created = Token.objects.get_or_create(user=request.user)
     dishes = Dish.objects.all()
-    return render(request, 'foods/dish_list.html', context={'dishes': dishes})
+    return render(request, 'foods/dish_list.html', context={'dishes': dishes, 'token': token})
 
 
 def dish_search(request):
@@ -131,6 +137,8 @@ def dish_add(request):
                 for key, val in data.items():
                     DishIngredients.objects.create(dish=new_dish, ingredient=key, quantity=val)
 
+                ws_reload_page()
+
                 return HttpResponseRedirect(reverse('dish_view', kwargs={'dish_slug': new_dish.slug}))
 
         form = DishAddForm()
@@ -158,8 +166,11 @@ def dish_view(request, dish_slug):
                                 "unit": ingredient.unit})
 
     if dish:
+        token = ''
+        if request.user.is_authenticated:
+            token, created = Token.objects.get_or_create(user=request.user)
         return render(request, 'foods/dish_view.html', context={'dish': dish, 'ingredients': ingredients, 'form': form,
-                                                                'comments': comments})
+                                                                'comments': comments, 'token': token})
 
 
 def dish_edit(request, dish_id):
