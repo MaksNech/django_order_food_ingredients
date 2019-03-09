@@ -1,17 +1,26 @@
 var loc = window.location;
 
+var token =  $('#user_token').val();
+
 var wsStart = 'ws://';
 
 if (loc.protocol == 'https:') {
     wsStart = 'wss://';
 };
 
-var endpoint = wsStart + loc.host + loc.pathname;
+var endpoint = wsStart + loc.host + loc.pathname + '?token=' + token;
 
 var socket = new WebSocket(endpoint);
 
 
 socket.onmessage = function (event) {
+
+     var data = JSON.parse(event.data);
+     var message = data['message'];
+     if (message === "reload") {
+        location.reload();
+     };
+
 
     var newComment = JSON.parse(event.data);
 

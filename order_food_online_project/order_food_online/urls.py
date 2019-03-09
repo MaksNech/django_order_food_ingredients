@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('api/v1/', include('api.urls')),
+    path('api/v1/', include('order_food_online.api_urls')),
     path('', lambda request: redirect('foods/', permanent=True)),
     path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),

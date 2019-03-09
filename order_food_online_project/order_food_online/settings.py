@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'foods',
     'notes',
     'authentication',
-    'api',
 
     'rest_framework',
     'rest_framework.authtoken',
