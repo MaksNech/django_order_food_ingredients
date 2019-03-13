@@ -4,7 +4,7 @@ from celery import Celery
 from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'order_food_online.settings')
-app = Celery('order_food_online', backend='redis://localhost', broker='redis://localhost')
+app = Celery('order_food_online')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 

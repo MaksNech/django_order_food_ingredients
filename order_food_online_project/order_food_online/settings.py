@@ -16,7 +16,6 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = '$pu=_%6bm*nr^6%o=^#!2&^4e26!f^zv2zo&woo=f4@x2h&re1'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -80,21 +78,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'order_food_online.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'order_food_db',
-        'USER': 'admin',
-        'PASSWORD': '123',
-        'HOST': '127.0.0.1',
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'order_food_db'),
+        'USER': os.getenv('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '123'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -138,7 +134,6 @@ USE_L10N = False
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -152,13 +147,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
 # FIXTURES
 
 FIXTURE_DIRS = (
-   os.path.join(BASE_DIR, 'fixtures'),
+    os.path.join(BASE_DIR, 'fixtures'),
 )
-
 
 # REDIRECTS
 
@@ -166,12 +159,11 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-
 # CELERY
 
-BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379'
 
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 
@@ -180,7 +172,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = 'Europe/Kiev'
-
 
 # DJANGO REST FRAMEWORK SETTINGS
 
@@ -199,7 +190,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # DJANGO CHANNELS
 
 ASGI_APPLICATION = "order_food_online.routing.application"
@@ -208,7 +198,12 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [
+                (
+                    os.getenv('REDIS_HOST', 'redis'),
+                    os.getenv('REDIS_PORT', 6379)
+                )
+            ],
         },
     },
 }
