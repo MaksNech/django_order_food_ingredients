@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=order_food_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+  redis:
+    image: "redis:alpine"
+  web:
+    build: .
+    command: bash -c "python /app/manage.py migrate --noinput && gunicorn -w 2 order_food_online.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - CELERY_BACKEND=redis://redis:6379
+      - CELERY_BROKER=redis://redis:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+  celery:
+    build: .
+    command: celery -A order_food_online worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+  celery-beat:
+    build: .
+    command: celery -A order_food_online beat -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:

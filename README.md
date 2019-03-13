@@ -221,3 +221,11 @@ http://127.0.0.1:8000/api/v1/rest-auth/logout/
 ```bash
 redis-server
 ```
+
+
+## 8: Docker:
+### Running Locally:
+#### Run docker-compose in project directory:
+```bash
+docker-compose up
+```
