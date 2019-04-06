@@ -1,4 +1,4 @@
-# Home task 12 (Django "order food online app")
+# Django "order food online app"
 
 ## 1: Initial Setup
 
